@@ -1,5 +1,6 @@
 package com.gabriel.Admin.controller;
 
+import com.gabriel.Backend.dto.AdminDto;
 import com.gabriel.Backend.model.Admin;
 import com.gabriel.Backend.service.impl.AdminServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class AuthController {
 
     public String register(Model model) {
         model.addAttribute("title", "Registro");
-        model.addAttribute("admin", new Admin());
+        model.addAttribute("admin", new AdminDto());
         return "register";
 
     }
