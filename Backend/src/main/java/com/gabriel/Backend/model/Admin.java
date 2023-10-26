@@ -3,7 +3,6 @@ package com.gabriel.Backend.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="admins" , uniqueConstraints = @UniqueConstraint(columnNames = {"username", "image"}))
+@Table(name = "admins", uniqueConstraints = @UniqueConstraint(columnNames = {"username", "image"}))
 public class Admin {
 
     @Id
@@ -25,7 +24,8 @@ public class Admin {
     private String password;
     private String image;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinTable(name = "admin_roles", joinColumns = @JoinColumn(name ="admin_id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "admins_roles", joinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "admin_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private List<Roles> roles;
 }

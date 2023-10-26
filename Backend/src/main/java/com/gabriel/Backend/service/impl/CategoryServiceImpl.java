@@ -3,16 +3,17 @@ package com.gabriel.Backend.service.impl;
 import com.gabriel.Backend.model.Category;
 import com.gabriel.Backend.repository.CategoryRepository;
 import com.gabriel.Backend.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-
-    private CategoryRepository repository;
+    private final CategoryRepository repository;
 
     @Override
     public List<Category> findAll() {
@@ -20,37 +21,38 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public Category save(Category category) {
-        Category categorySave = new Category();
-        categorySave.setName(category.getName());
-        categorySave.set_activated(true);
-        categorySave.set_deleted(false);
-        return repository.save(categorySave);
+        category.set_activated(true);
+        category.set_deleted(false);
+        return repository.save(category);
     }
 
     @Override
-    public Optional<Category> findById(Long id) {
-        return repository.findById(id);
+    public Category findById(Long id) {
+        return repository.findById(id).get();
     }
+
 
     @Override
     public Category update(Category category) {
-        Category categoryUpdated = repository.getReferenceById(category.getId());
-        categoryUpdated.setName(category.getName());
-        return repository.save(categoryUpdated);
+        Category categoryUpdate = repository.getReferenceById(category.getId());
+        categoryUpdate.setName(category.getName());
+        return repository.save(categoryUpdate);
     }
+
 
     @Override
     public void deleteById(Long id) {
-        Category category = repository.getReferenceById(id);
+        Category category = repository.getById(id);
         category.set_activated(false);
         category.set_deleted(true);
         repository.save(category);
     }
 
     @Override
-    public void enabledById(Long id) {
-        Category category = repository.getReferenceById(id);
+    public void enableById(Long id) {
+        Category category = repository.getById(id);
         category.set_activated(true);
         category.set_deleted(false);
         repository.save(category);
@@ -58,6 +60,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAllByActivated() {
-        return repository.findByAllActivated();
+        return repository.findAllByActivated();
     }
 }

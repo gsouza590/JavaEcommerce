@@ -5,19 +5,16 @@ import com.gabriel.Backend.model.Admin;
 import com.gabriel.Backend.repository.AdminRepository;
 import com.gabriel.Backend.repository.RoleRepository;
 import com.gabriel.Backend.service.AdminService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
-
-    @Autowired
-    private AdminRepository adminRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-
+    private final AdminRepository adminRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public Admin save(AdminDto adminDto) {
@@ -27,7 +24,8 @@ public class AdminServiceImpl implements AdminService {
         admin.setUsername(adminDto.getUsername());
         admin.setPassword(adminDto.getPassword());
         admin.setRoles(Arrays.asList(roleRepository.findByName("ADMIN")));
-        return adminRepository.save(admin);    }
+        return adminRepository.save(admin);
+    }
 
     @Override
     public Admin findByUsername(String username) {

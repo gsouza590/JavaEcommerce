@@ -14,7 +14,7 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Crie sua Conta!</h1>
                             </div>
                             <div th:if = "${emailError}">
                                 <p class = "alert alert-danger" th:text = "${emailError}"></p>
@@ -34,7 +34,7 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control form-control-user" th:field = "*{firstName}" id="exampleFirstName"
-                                            placeholder="First Name">
+                                            placeholder="Primeiro Nome">
                                         <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"
                                              th:errors = "*{firstName}"
                                         ></div>
@@ -42,7 +42,7 @@
 
                                     <div class="col-sm-6">
                                         <input type="text" th:field = "*{lastName}" class="form-control form-control-user" id="exampleLastName"
-                                            placeholder="Last Name">
+                                            placeholder="Sobrenome">
                                         <div class="alert alert-danger" th:if = "${#fields.hasErrors('lastName')}"
                                             th:errors = "*{lastName}"
                                         ></div>
@@ -50,12 +50,12 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="email" th:field = "*{username}" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="Email Username">
+                                        placeholder="Email">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="password" th:field = "*{password}" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password">
+                                            id="exampleInputPassword" placeholder="Senha">
 
                                         <div class="alert alert-danger" th:if = "${#fields.hasErrors('password')}"
                                             th:errors = "*{password}"
@@ -63,20 +63,20 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" th:field = "*{repeatPassword}" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Repeat Password">
+                                            id="exampleRepeatPassword" placeholder="Repita a Senha">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
-                                    Register Account
+                                    Registre-se
                                 </button>
                                 <hr>
                             </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" th:href = "@{/forgot-password}" href="forgot-password.html">Forgot Password?</a>
+                                <a class="small" th:href = "@{/forgot-password}" href="forgot-password.html">Esqueceu a Senha?</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" th:href = "@{/login}">Already have an account? Login!</a>
+                                <a class="small" th:href = "@{/login}">Já Possui Conta? Faça o Login!</a>
                             </div>
                         </div>
                     </div>

@@ -24,6 +24,5 @@ import lombok.Data;
             this.is_activated = true;
             this.is_deleted = false;
         }
-
     }
 
