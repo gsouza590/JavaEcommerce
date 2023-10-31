@@ -23,8 +23,8 @@ public class ProductDto {
     private int currentQuantity;
     private Category category;
     private String image;
-    private boolean activated;
-    private boolean deleted;
+    private boolean is_activated;
+    private boolean is_deleted;
 
     public static List<ProductDto> ProductToDto(List<Product> products) {
         ModelMapper modelMapper = new ModelMapper();

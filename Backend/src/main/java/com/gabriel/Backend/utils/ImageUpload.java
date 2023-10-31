@@ -14,23 +14,27 @@ public class ImageUpload {
     @Value("${upload.folder}")
     private String UPLOAD_FOLDER;
 
-    public boolean uploadImage(MultipartFile imageProduct){
-        boolean isUpload=false;
-        try{
-            Files.copy(imageProduct.getInputStream(), Paths.get(UPLOAD_FOLDER+ File.separator,imageProduct.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
-            isUpload=true;
-        }catch (Exception e){
+    public boolean uploadImage(MultipartFile imageProduct) {
+        boolean isUpload = false;
+        try {
+            Files.copy(
+                    imageProduct.getInputStream(),
+                    Paths.get(UPLOAD_FOLDER + File.separator, imageProduct.getOriginalFilename()),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+            isUpload = true;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return isUpload;
     }
 
-    public boolean checkExisted(MultipartFile imageProduct){
-        boolean isExisted= false;
-        try{
-            File file= new File(UPLOAD_FOLDER +"\\"+ imageProduct.getOriginalFilename());
-            isExisted= file.exists();
-        }catch (Exception e){
+    public boolean checkExisted(MultipartFile imageProduct) {
+        boolean isExisted = false;
+        try {
+            File file = new File(UPLOAD_FOLDER + File.separator + imageProduct.getOriginalFilename());
+            isExisted = file.exists();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return isExisted;

@@ -7,6 +7,7 @@ import com.gabriel.Backend.service.ProductService;
 import com.gabriel.Backend.utils.ImageUpload;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
