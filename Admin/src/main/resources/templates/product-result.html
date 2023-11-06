@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 
-<head th:replace="fragments :: header">
+<head th:replace="~{fragments::header}">
+
 </head>
 
 <body id="page-top">
@@ -21,8 +22,8 @@
 
             <!-- Topbar -->
             <nav th:replace="~{fragments::top-navbar}">
-            </nav>            <!-- End of Topbar -->
-
+            </nav>
+            <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
@@ -78,25 +79,26 @@
                 </table>
 
 
-                <!-- Pagination -->
+                <!--Pagination  -->
                 <nav aria-label="...">
                     <ul class="pagination">
                         <li th:if="${currentPage != null && currentPage != 0}" class="page-item">
                             <a th:href="@{'/products/' + ${currentPage - 1} + '/'}" class="page-link">Anterior</a>
                         </li>
-                        <li th:each="pageNumber : ${pageNumbers}" th:classappend="${currentPage != null && currentPage == pageNumber - 1 ? 'active' : ''}" class="page-item">
+                        <li th:each="pageNumber : ${pageNumbers}"
+                            th:classappend="${currentPage != null && currentPage == pageNumber - 1 ? 'active' : ''}"
+                            class="page-item">
                             <a th:href="@{'/products/' + ${pageNumber - 1} + '/'}" class="page-link" href="#">
                                 <span th:text="${pageNumber}"></span>
                             </a>
                         </li>
                         <li th:if="${currentPage != null && currentPage + 1 != totalPages}" class="page-item">
-                            <a th:href="@{'/products/' + ${currentPage + 1} + '/'}" class="page-link" href="#">Próximo</a>
+                            <a th:href="@{'/products/' + ${currentPage + 1} + '/'}" class="page-link"
+                               href="#">Próximo</a>
                         </li>
                     </ul>
                 </nav>
-                <!-- Pagination -->
-
-
+                <!--Pagination  -->
             </div>
             <!-- /.container-fluid -->
 

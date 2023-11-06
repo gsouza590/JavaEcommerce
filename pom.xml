@@ -13,6 +13,7 @@
 	<modules>
 		<module>Backend</module>
 		<module>Admin</module>
+		<module>Customer</module>
 	</modules>
 	<properties>
 		<java.version>17</java.version>

@@ -7,6 +7,7 @@ import com.gabriel.Backend.model.Product;
 import com.gabriel.Backend.service.CategoryService;
 import com.gabriel.Backend.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,37 @@ public class ProductController {
         model.addAttribute("size", products.size());
         return "products";
     }
+    @GetMapping("/products/{pageNo}")
+    public String allProducts(@PathVariable("pageNo") int pageNo, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Page<ProductDto> products = productService.findAllProducts(pageNo);
+        model.addAttribute("title", "Produtos");
+        model.addAttribute("size", products.getSize());
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", products.getTotalPages());
+        return "products";
+    }
+
+    @GetMapping("/search-products/{pageNo}")
+    public String searchProduct(@PathVariable("pageNo") int pageNo,
+                                @RequestParam(value = "keyword") String keyword,
+                                Model model, Principal principal
+    ) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Page<ProductDto> products = productService.searchProducts(pageNo, keyword);
+        model.addAttribute("title", "Result Search Products");
+        model.addAttribute("size", products.getSize());
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", products.getTotalPages());
+        return "product-result";
+
+    }
     @GetMapping("/add-product")
     public String addProductPage(Model model, Principal principal) {
         if (principal == null) {
@@ -60,7 +92,7 @@ public class ProductController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Erro em adicionar o Produto!");
         }
-        return "redirect:/products";
+        return "redirect:/products/0";
     }
 
     @GetMapping("/update-product/{id}")
@@ -90,7 +122,7 @@ public class ProductController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Erro no Servidor , Tente novamente!");
         }
-        return "redirect:/products";
+        return "redirect:/products/0";
     }
 
     @RequestMapping(value = "/enable-product", method = {RequestMethod.PUT, RequestMethod.GET})
@@ -105,7 +137,7 @@ public class ProductController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Ativação falhou!");
         }
-        return "redirect:/products";
+        return "redirect:/products/0";
     }
 
     @RequestMapping(value = "/delete-product", method = {RequestMethod.PUT, RequestMethod.GET})
@@ -120,6 +152,6 @@ public class ProductController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", " Falha ao deletar o Produto!");
         }
-        return "redirect:/products";
+        return "redirect:/products/0";
     }
 }

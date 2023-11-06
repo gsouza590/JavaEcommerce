@@ -25,6 +25,7 @@ public class ProductDto {
     private String image;
     private boolean is_activated;
     private boolean is_deleted;
+    private String currentPage;
 
     public static List<ProductDto> ProductToDto(List<Product> products) {
         ModelMapper modelMapper = new ModelMapper();

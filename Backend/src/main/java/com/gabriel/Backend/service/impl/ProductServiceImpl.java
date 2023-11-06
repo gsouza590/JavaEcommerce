@@ -7,7 +7,11 @@ import com.gabriel.Backend.service.ProductService;
 import com.gabriel.Backend.utils.ImageUpload;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    @Autowired
     private final ProductRepository productRepository;
+    @Autowired
     private final ImageUpload imageUpload;
     private final ModelMapper modelMapper;
 
@@ -40,14 +46,12 @@ public class ProductServiceImpl implements ProductService {
                 }
                 product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
             }
-
             product.set_activated(true);
             product.set_deleted(false);
 
             return productRepository.save(product);
         } catch (Exception e) {
             e.printStackTrace();
-            // Considere lançar uma exceção personalizada aqui
             return null;
         }
     }
@@ -96,4 +100,39 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.getReferenceById(id);
         return modelMapper.map(product, ProductDto.class);
     }
+
+    @Override
+    public List<ProductDto> randomProduct() {
+        return ProductDto.ProductToDto(productRepository.randomProduct());
+    }
+    @Override
+    public Page<ProductDto> searchProducts(int pageNo, String keyword) {
+        List<Product> products = productRepository.findAllByNameOrDescription(keyword);
+        List<ProductDto> productDtoList = ProductDto.ProductToDto(products);
+        Pageable pageable = PageRequest.of(pageNo, 5);
+        Page<ProductDto> dtoPage = toPage(productDtoList, pageable);
+        return dtoPage;
+    }
+
+    @Override
+    public Page<ProductDto> findAllProducts(int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, 5);
+        List<ProductDto> productDtoLists = this.findAll();
+        Page<ProductDto> productDtoPage = toPage(productDtoLists, pageable);
+        return productDtoPage;
+    }
+
+
+
+    private Page toPage(List list, Pageable pageable) {
+        int startIndex = (int) pageable.getOffset();
+        int endIndex = Math.min(startIndex + pageable.getPageSize(), list.size());
+
+        if (startIndex >= endIndex) {
+            return Page.empty();
+        }
+
+        return new PageImpl<>(list.subList(startIndex, endIndex), pageable, list.size());
+    }
+
 }
