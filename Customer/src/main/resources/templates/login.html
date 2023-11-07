@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<!-- Basic -->
+<head th:replace="~{fragments::head}">
+</head>
+
+<body>
+    <!-- Start Main Top -->
+    <div th:replace="~{fragments::main-top}">
+
+    </div>
+    <!-- End Main Top -->
+
+    <!-- Start Main Top -->
+    <header th:replace="~{fragments::main-header}" >
+    </header>
+    <!-- End Main Top -->
+
+    <!-- Start Top Search -->
+    <div th:replace="~{fragments::top-search}">
+    </div>
+    <!-- End Top Search -->
+
+
+
+    <section id="login-form">
+        <div class="noi-dung">
+            <div class="form">
+                <h2>Entrar</h2>
+                <div th:if = "${param.error}" class="alert alert-danger text-center">
+                    Usuário ou senha inválida
+                </div>
+                <div th:if = "${param.logout}" class="alert alert-success text-center">
+                    Deslogou com sucesso
+                </div>
+                <form th:action="@{/do-login}" method="post">
+                    <div class="input-form">
+                        <input type="text" placeholder="Nome" name="username" required>
+                    </div>
+                    <div class="input-form">
+                        <input type="password" placeholder="Senha" name="password">
+                    </div>
+                    <div class="input-form">
+                        <input type="submit" value="Entrar">
+                    </div>
+                    <div class="input-form">
+                        <p>Você já possui cadastro? <a th:href="@{/register}">Registre-se agora  </a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+  
+    </section>
+    <!-- Start copyright  -->
+    <footer th:replace="~{fragments::footer}"></footer>
+    <!-- End copyright  -->
+
+    <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+    <!-- ALL JS FILES -->
+    <div th:replace="~{fragments::script}"></div>
+</body>
+
+</html>

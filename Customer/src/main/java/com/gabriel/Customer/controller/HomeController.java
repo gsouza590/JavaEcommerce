@@ -26,7 +26,7 @@ public class HomeController {
         model.addAttribute("page","Home");
         if(principal!=null){
             Customer customer = customerService.findByUsername(principal.getName());
-            session.setAttribute("username", customer.getFirstName()+ " " + customer.getFirstName());
+            session.setAttribute("username", customer.getFirstName()+ " " + customer.getLastName());
             ShoppingCart shoppingCart = customer.getShoppingCart();
             if(shoppingCart!= null){
                 session.setAttribute("totalItems" ,shoppingCart.getTotalItems());
@@ -34,5 +34,6 @@ public class HomeController {
         }
         return "home";
     }
+
     }
 

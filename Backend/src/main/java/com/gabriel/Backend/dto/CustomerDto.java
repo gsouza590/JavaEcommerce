@@ -23,7 +23,7 @@ public class CustomerDto {
     private String phoneNumber;
 
     private String address;
-    private String confirmPassword;
+    private String repeatPassword;
     private City city;
     private String image;
     private String country;
