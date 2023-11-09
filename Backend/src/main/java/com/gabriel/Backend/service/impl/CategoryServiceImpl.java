@@ -1,5 +1,6 @@
 package com.gabriel.Backend.service.impl;
 
+import com.gabriel.Backend.dto.CategoryDto;
 import com.gabriel.Backend.model.Category;
 import com.gabriel.Backend.repository.CategoryRepository;
 import com.gabriel.Backend.service.CategoryService;
@@ -61,5 +62,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAllByActivated() {
         return repository.findAllByActivated();
+    }
+
+    @Override
+    public List<CategoryDto> getCategoriesAndSize() {
+        List<CategoryDto> categories = repository.getCategoriesAndSize();
+        return null;
     }
 }

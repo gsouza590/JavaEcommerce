@@ -34,8 +34,8 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="title-all text-center">
-						<h1 th:text="${category.name}">Fish</h1>
-						<p>Have you a really good meal!</p>
+						<h1 th:text="${category.name}"></h1>
+
 					</div>
 				</div>
 			</div>
@@ -43,8 +43,8 @@
 				<div class="col-lg-12">
 					<div class="special-menu text-center">
 						<div class="button-group filter-button-group">
-							<button class="active" data-filter="*">All</button>
-							<button data-filter=".best-seller">Best seller</button>
+							<button class="active" data-filter="*">Todos</button>
+							<button data-filter=".best-seller">Mais Vendidos</button>
 						</div>
 					</div>
 				</div>
@@ -60,15 +60,15 @@
                                 <ul>
                                     <li><a th:href="@{/product-detail/{id}(id = ${product.id})}" data-toggle="tooltip"
                                            data-placement="right"
-                                           title="View"><i class="fas fa-eye"></i></a></li>
+                                           title="Detalhes"><i class="fas fa-eye"></i></a></li>
                                 </ul>
                                 <input type = "hidden" th:value = "${product.id}" name = "id" class = "form-control">
-                                <input type="submit" class="btn hvr-hover" value="Add to cart">
+                                <input type="submit" class="btn hvr-hover" value="Adicionar no Carrinho">
                             </div>
                         </div>
                         <div class="why-text">
                             <h4 th:text="${product.name}"></h4>
-                            <h5 th:text="'$' + ${product.costPrice}"></h5>
+                            <h5 th:text="'R$ ' + ${product.costPrice}"></h5>
                         </div>
 						</div>
 					</form>

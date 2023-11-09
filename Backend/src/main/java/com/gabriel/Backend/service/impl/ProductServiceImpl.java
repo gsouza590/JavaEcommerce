@@ -35,6 +35,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductDto> products() {
+        return ProductDto.ProductToDto(productRepository.getAllProduct());
+    }
+
+    @Override
     public Product save(MultipartFile imageProduct, ProductDto productDto) {
         try {
             Product product = modelMapper.map(productDto, Product.class);
@@ -105,6 +110,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> randomProduct() {
         return ProductDto.ProductToDto(productRepository.randomProduct());
     }
+
     @Override
     public Page<ProductDto> searchProducts(int pageNo, String keyword) {
         List<Product> products = productRepository.findAllByNameOrDescription(keyword);
@@ -114,6 +120,14 @@ public class ProductServiceImpl implements ProductService {
         return dtoPage;
     }
 
+
+    @Override
+    public  List<ProductDto>searchProducts(String keyword) {
+
+        return ProductDto.ProductToDto(productRepository.findAllByNameOrDescription(keyword));
+    }
+
+
     @Override
     public Page<ProductDto> findAllProducts(int pageNo) {
         Pageable pageable = PageRequest.of(pageNo, 5);
@@ -122,6 +136,32 @@ public class ProductServiceImpl implements ProductService {
         return productDtoPage;
     }
 
+    @Override
+    public List<ProductDto> findAllByCategory(String category) {
+        return ProductDto.ProductToDto(productRepository.findAllByCategory(category));
+    }
+
+    @Override
+    public List<ProductDto> listViewProducts() {
+        return ProductDto.ProductToDto(productRepository.listViewProduct());
+    }
+
+    @Override
+    public List<ProductDto> findByCategoryId(Long id) {
+        return ProductDto.ProductToDto(productRepository.getProductByCategoryId(id));
+    }
+
+    @Override
+    public List<ProductDto> filterLowerProducts() {
+        return ProductDto.ProductToDto(productRepository.filterLowerProducts());
+
+    }
+
+    @Override
+    public List<ProductDto> filterHighProducts() {
+        return ProductDto.ProductToDto(productRepository.filterHighProducts());
+
+    }
 
 
     private Page toPage(List list, Pageable pageable) {

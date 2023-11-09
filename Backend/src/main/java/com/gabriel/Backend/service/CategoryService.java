@@ -1,5 +1,6 @@
 package com.gabriel.Backend.service;
 
+import com.gabriel.Backend.dto.CategoryDto;
 import com.gabriel.Backend.model.Category;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface CategoryService {
     void enableById(Long id);
 
     List<Category> findAllByActivated();
+
+    List<CategoryDto> getCategoriesAndSize();
 }
