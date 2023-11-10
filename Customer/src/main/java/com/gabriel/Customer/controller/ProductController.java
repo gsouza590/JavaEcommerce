@@ -95,7 +95,7 @@ public class ProductController {
         model.addAttribute("title", productDtos.get(0).getCategory().getName());
         model.addAttribute("page", "Produtos");
         model.addAttribute("products", productDtos);
-        return "products";
+        return "shop-detail";
     }
 
     @GetMapping("/search-product")

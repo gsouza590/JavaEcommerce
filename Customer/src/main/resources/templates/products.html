@@ -39,16 +39,16 @@
                     <div class="product-item-filter row">
                         <div class="col-12 col-sm-8 text-center text-sm-left">
                             <div class="toolbar-sorter-right">
-                                <span>Sort by </span>
+                                <span>Ordenar por </span>
                                 <select id="basic" class="selectpicker show-tick form-control"
-                                        data-placeholder="$ USD" onchange="location = this.value;">
-                                    <option>--Select--</option>
+                                        data-placeholder="R$ BRL" onchange="location = this.value;">
+                                    <option>--Selecione--</option>
                                     <option value="http://localhost:8019/shop/shop-detail">Normal</option>
-                                    <option value="http://localhost:8019/shop/high-price">High Price → Low Price
+                                    <option value="http://localhost:8019/shop/high-price">Maior Valor
                                     </option>
-                                    <option value="http://localhost:8019/shop/lower-price">Low Price → High Price
+                                    <option value="http://localhost:8019/shop/lower-price">Menor Valor
                                     </option>
-                                    <option value="4">Best Selling</option>
+                                    <option value="4">Mais Vendidos</option>
                                 </select>
                             </div>
                             <p>Showing all results</p>
@@ -85,7 +85,7 @@
                                                                     class="fas fa-eye"></i></a></li>
                                                         </ul>
                                                         <input type = "hidden" th:value = "${product.id}" name = "id" class = "form-control">
-                                                        <input type="submit" class="btn hvr-hover" value="Add to cart">
+                                                        <input type="submit" class="btn hvr-hover" value="Adicionar ao Carrinho">
                                                     </div>
                                                 </div>
                                                 <div class="why-text">
@@ -114,7 +114,7 @@
                                                 <h4 th:text="${productView.name}"></h4>
                                                 <h5 th:text="'$' + ${productView.costPrice}"></h5>
                                                 <p th:text="${productView.description}"></p>
-                                                <a class="btn hvr-hover" href="#">Add to Cart</a>
+                                                <a class="btn hvr-hover" href="#">Adicionar ao Carrinho</a>
                                             </div>
                                         </div>
                                     </div>
@@ -129,13 +129,13 @@
                 <div class="product-categori">
                     <div class="search-product">
                         <form th:action="@{/search-product}" method="get">
-                            <input class="form-control" name="keyword" placeholder="Search here..." type="text">
+                            <input class="form-control" name="keyword" placeholder="Pesquisar..." type="text">
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
                     <div class="filter-sidebar-left">
                         <div class="title-left">
-                            <h3>Categories</h3>
+                            <h3>Categorias</h3>
                         </div>
                         <div class="list-group list-group-collapse list-group-sm list-group-tree"
                              id="list-group-men" data-children=".sub-men" th:each="categoryDto : ${categories}">

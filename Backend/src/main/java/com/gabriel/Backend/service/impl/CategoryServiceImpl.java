@@ -67,6 +67,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> getCategoriesAndSize() {
         List<CategoryDto> categories = repository.getCategoriesAndSize();
-        return null;
+        return categories;
     }
 }
