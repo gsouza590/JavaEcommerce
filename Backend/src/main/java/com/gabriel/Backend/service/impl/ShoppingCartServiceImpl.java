@@ -12,7 +12,9 @@ import com.gabriel.Backend.service.ShoppingCartService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Set;
 
@@ -71,14 +73,59 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartRepository.save(shoppingCart);
     }
 
+
     @Override
+    @Transactional
     public ShoppingCart updateCart(ProductDto productDto, int quantity, String username) {
-        return null;
+        Customer customer = customerService.findByUsername(username);
+        ShoppingCart shoppingCart = customer.getShoppingCart();
+        Set<CartItem> cartItems = shoppingCart.getCartItems();
+        CartItem item = find(cartItems, productDto.getId());
+
+        item.setQuantity(quantity);
+        cartItemRepository.save(item);
+
+        updateShoppingCart(shoppingCart, cartItems);
+
+        return shoppingCartRepository.save(shoppingCart);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ShoppingCart removeItemFromCart(ProductDto productDto, String username) {
-        return null;
+        Customer customer = customerService.findByUsername(username);
+        ShoppingCart shoppingCart = customer.getShoppingCart();
+        Set<CartItem> cartItems = shoppingCart.getCartItems();
+        CartItem item = find(cartItems, productDto.getId());
+
+        cartItems.remove(item);
+        cartItemRepository.delete(item);
+
+        updateShoppingCart(shoppingCart, cartItems);
+
+        return shoppingCartRepository.save(shoppingCart);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCartById(Long id) {
+        ShoppingCart shoppingCart = shoppingCartRepository.getById(id);
+        if(!ObjectUtils.isEmpty(shoppingCart) && !ObjectUtils.isEmpty(shoppingCart.getCartItems())){
+            cartItemRepository.deleteAll(shoppingCart.getCartItems());
+        }
+        shoppingCart.getCartItems().clear();
+        shoppingCart.setTotalPrice(0);
+        shoppingCart.setTotalItems(0);
+        shoppingCartRepository.save(shoppingCart);
+    }
+
+
+
+    //Methods
+    private void updateShoppingCart(ShoppingCart shoppingCart, Set<CartItem> cartItems) {
+        shoppingCart.setCartItems(cartItems);
+        shoppingCart.setTotalItems(totalItem(cartItems));
+        shoppingCart.setTotalPrice(totalPrice(cartItems));
     }
 
     private CartItem find(Set<CartItem> cartItems, long productId) {
