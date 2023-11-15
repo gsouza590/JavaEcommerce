@@ -1,6 +1,7 @@
 package com.gabriel.Backend.service;
 
 import com.gabriel.Backend.dto.ProductDto;
+import com.gabriel.Backend.dto.ShoppingCartDto;
 import com.gabriel.Backend.model.ShoppingCart;
 import org.springframework.stereotype.Service;
 

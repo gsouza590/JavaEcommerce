@@ -2,6 +2,9 @@ package com.gabriel.Backend.service;
 
 import com.gabriel.Backend.dto.CustomerDto;
 import com.gabriel.Backend.model.Customer;
+import org.springframework.stereotype.Service;
+
+@Service
 
 public interface CustomerService {
     Customer save(CustomerDto customerDto);

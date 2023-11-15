@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
 
     @GetMapping("/cart")
+    @Transactional
     public String cart(Model model, Principal principal) {
         if (principal == null) {
             return "redirect:/login";
@@ -47,6 +49,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/add-to-cart")
+    @Transactional
     public String addItemToCart(@RequestParam("id") Long id,
                                 @RequestParam(value = "quantity", required = false, defaultValue = "1") int quantity,
                                 HttpServletRequest request,
@@ -67,6 +70,8 @@ public class ShoppingCartController {
     }
 
     @RequestMapping(value = "/update-cart", method = RequestMethod.POST, params = "action=update")
+    @Transactional
+
     public String updateCart(@RequestParam("id") Long id,
                              @RequestParam("quantity") int quantity,
                              Model model,
@@ -85,6 +90,7 @@ public class ShoppingCartController {
     }
 
     @RequestMapping(value = "/update-cart", method = RequestMethod.POST, params = "action=delete")
+    @Transactional
     public String deleteItem(@RequestParam("id") Long id,
                              Model model,
                              Principal principal,

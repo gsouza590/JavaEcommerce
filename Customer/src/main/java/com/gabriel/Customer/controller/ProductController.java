@@ -7,6 +7,7 @@ import com.gabriel.Backend.service.CategoryService;
 import com.gabriel.Backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/menu")
+    @Transactional
     public String menu(Model model) {
         model.addAttribute("page", "`Produtos`");
         model.addAttribute("title", "Produtos");
@@ -34,6 +36,7 @@ public class ProductController {
     }
 
     @GetMapping("/product-detail/{id}")
+    @Transactional
     public  String details(@PathVariable ("id")Long id, Model model){
         ProductDto product = productService.getById(id);
         List<ProductDto>productDtoList= productService.findAllByCategory(product.getCategory().getName());
@@ -47,6 +50,7 @@ public class ProductController {
 
 
     @GetMapping("/shop-detail")
+    @Transactional
     public String shopDetail(Model model) {
         List<CategoryDto> categories = categoryService.getCategoriesAndSize();
         model.addAttribute("categories", categories);
@@ -60,6 +64,7 @@ public class ProductController {
     }
 
     @GetMapping("/high-price")
+    @Transactional
     public String filterHighPrice(Model model) {
         List<CategoryDto> categories = categoryService.getCategoriesAndSize();
         model.addAttribute("categories", categories);
@@ -74,6 +79,7 @@ public class ProductController {
 
 
     @GetMapping("/lower-price")
+    @Transactional
     public String filterLowerPrice(Model model) {
         List<CategoryDto> categories = categoryService.getCategoriesAndSize();
         model.addAttribute("categories", categories);
@@ -86,6 +92,7 @@ public class ProductController {
         return "shop-detail";
     }
     @GetMapping("/find-products/{id}")
+    @Transactional
     public String productsInCategory(@PathVariable("id") Long id, Model model) {
         List<CategoryDto> categoryDtos = categoryService.getCategoriesAndSize();
         List<ProductDto> productDtos = productService.findByCategoryId(id);
@@ -99,6 +106,7 @@ public class ProductController {
     }
 
     @GetMapping("/search-product")
+    @Transactional
     public String searchProduct(@RequestParam("keyword") String keyword, Model model) {
         List<CategoryDto> categories = categoryService.getCategoriesAndSize();
         List<ProductDto> products = productService.searchProducts(keyword);

@@ -36,8 +36,6 @@ import java.util.List;
         @Column(name = "image", columnDefinition = "MEDIUMBLOB")
         private String image;
 
-
-
         @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
         private ShoppingCart shoppingCart;
         @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)

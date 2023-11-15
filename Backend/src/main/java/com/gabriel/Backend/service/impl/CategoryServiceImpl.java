@@ -31,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(Long id) {
+
         return repository.findById(id).get();
     }
 

@@ -66,12 +66,10 @@
                                 <p style="color: red">$ [(${order.totalPrice})]</p>
                             </td>
                             <td class="total-pr" style="color: black">
-                                <span></span>[(${order.paymentMethod})]</span>
+                                <span>[(${order.paymentMethod})]</span>
                             </td>
                             <td>
-                                <a th:href="@{/cancel-order/(id = ${order.id})}" class="button-cancel">Cancelar</a>
-                            </td>
-                            </a>
+                                <a th:href="@{'/cancel-order/' + ${order.id}}" class="button-cancel">Cancelar</a>
                             </td>
                         </tr>
                         </tbody>

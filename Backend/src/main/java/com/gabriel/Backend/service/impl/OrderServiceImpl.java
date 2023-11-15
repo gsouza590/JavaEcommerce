@@ -1,14 +1,12 @@
 package com.gabriel.Backend.service.impl;
 
-import com.gabriel.Backend.model.CartItem;
-import com.gabriel.Backend.model.Order;
-import com.gabriel.Backend.model.OrderDetail;
-import com.gabriel.Backend.model.ShoppingCart;
+import com.gabriel.Backend.model.*;
 import com.gabriel.Backend.repository.CustomerRepository;
 import com.gabriel.Backend.repository.OrderDetailRepository;
 import com.gabriel.Backend.repository.OrderRepository;
 import com.gabriel.Backend.service.OrderService;
 import com.gabriel.Backend.service.ShoppingCartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,17 +16,13 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-
-
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private OrderDetailRepository detailRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private ShoppingCartService cartService;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository detailRepository;
+    private final CustomerRepository customerRepository;
+    private final ShoppingCartService cartService;
+
 
     @Override
     @Transactional
@@ -38,8 +32,8 @@ public class OrderServiceImpl implements OrderService {
         order.setCustomer(shoppingCart.getCustomer());
         order.setTotalPrice(shoppingCart.getTotalPrice());
         order.setAccept(false);
-        order.setPaymentMethod("Cash");
-        order.setOrderStatus("Pending");
+        order.setPaymentMethod("Dinheiro");
+        order.setOrderStatus("Pendente");
         order.setQuantity(shoppingCart.getTotalItems());
         List<OrderDetail> orderDetailList = new ArrayList<>();
         for (CartItem item : shoppingCart.getCartItems()) {
@@ -57,22 +51,31 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAll(String username) {
-        return null;
+        Customer customer = customerRepository.findByUsername(username);
+        List<Order> orders = customer.getOrders();
+        return orders;
     }
 
     @Override
     public List<Order> findAllOrders() {
-        return null;
+
+        return orderRepository.findAll();
     }
 
     @Override
+    @Transactional
     public Order acceptOrder(Long id) {
-        return null;
+        Order order = orderRepository.getReferenceById(id);
+        order.setAccept(true);
+        order.setDeliveryDate(new Date());
+        return orderRepository.save(order);
     }
 
     @Override
     public void cancelOrder(Long id) {
-
+        orderRepository.deleteById(id);
     }
+
 }
+
 
