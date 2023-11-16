@@ -54,7 +54,7 @@
                         <div class="mb-3">
                             <label for="address">Endereço *</label>
                             <input type="text" class="form-control"
-                                   th:value="${customer.address + ' ' + customer.city + ' ' + customer.country}"
+                                   th:value="${customer.address + ', ' + customer.city.name}"
                                    id="address" placeholder="" readonly>
                         </div>
                         <a th:href="@{/profile}" class="btn btn-primary"> Mudar Informações</a>
@@ -85,7 +85,7 @@
                                                                th:text="${item.product.name}"></a>
                                         <div class="small text-muted">Preço: R$ [(${item.product.costPrice})] <span
                                                 class="mx-2">|</span> Quantidade: [(${item.quantity})]
-                                            <span class="mx-2">|</span> Subtotal: R$  [(${item.unitPrice *
+                                            <span class="mx-2">|</span> Subtotal: R$ [(${item.unitPrice *
                                             item.quantity})]
                                         </div>
                                     </div>
@@ -105,12 +105,13 @@
                             <hr class="my-1">
                             <div class="d-flex">
                                 <h4>SubTotal</h4>
-                                <div class="ml-auto font-weight-bold" th:text=" 'R$ ' + ${shoppingCart.totalPrice}"></div>
+                                <div class="ml-auto font-weight-bold"
+                                     th:text=" 'R$ ' + ${shoppingCart.totalPrice}"></div>
                             </div>
                             <hr class="my-1">
                             <div class="d-flex">
                                 <h4>Frete</h4>
-                                <div class="ml-auto font-weight-bold"> Grátis</div>
+                                <div class="ml-auto font-weight-bold">Grátis</div>
                             </div>
                             <hr>
                             <div class="d-flex gr-total">
@@ -130,11 +131,7 @@
 </div>
 <!-- End Cart -->
 
-<!-- Start Feed  -->
-<div th:replace="~{fragments::instagram-box}">
-</div>
 
-<!-- End Feed  -->
 
 
 <!-- Start Footer  -->

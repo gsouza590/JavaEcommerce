@@ -42,16 +42,13 @@
                                 <span>Ordernar por </span>
                                 <select id="basic" class="selectpicker show-tick form-control"
                                         data-placeholder="R$ BRL" onchange="location = this.value;">
-                                    <option>--Selecione--</option>
                                     <option value="http://localhost:8019/shop/shop-detail">Normal</option>
                                     <option value="http://localhost:8019/shop/high-price">Maior Valor
                                     </option>
                                     <option value="http://localhost:8019/shop/lower-price">Menor Valor
                                     </option>
-                                    <option value="4">Mais Vendidos</option>
                                 </select>
                             </div>
-                            <p>Mostrar Todos os Resultados</p>
                         </div>
                         <div class="col-12 col-sm-4 text-center text-sm-right">
                             <ul class="nav nav-tabs ml-auto">
@@ -160,13 +157,6 @@
 </div>
 
 <!-- End Shop Page -->
-
-<!-- Start Feed  -->
-<div th:replace="~{fragments::instagram-box}">
-
-</div>
-
-<!-- End Feed  -->
 
 
 <!-- Start Footer  -->

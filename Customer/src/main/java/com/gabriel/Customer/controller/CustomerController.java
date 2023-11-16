@@ -46,8 +46,8 @@ public class CustomerController {
         model.addAttribute("customer", customer);
         model.addAttribute("cities", cities);
         model.addAttribute("countries", countryList);
-        model.addAttribute("title", "Profile");
-        model.addAttribute("page", "Profile");
+        model.addAttribute("title", "Minha Conta");
+        model.addAttribute("page", "Minha Conta");
         return "customer-information";
 
     }
@@ -86,8 +86,8 @@ public class CustomerController {
         if (principal == null) {
             return "redirect:/login";
         }
-        model.addAttribute("title", "Change password");
-        model.addAttribute("page", "Change password");
+        model.addAttribute("title", "Mudar Senha");
+        model.addAttribute("page", "Mudar Senha");
         return "change-password";
     }
 
@@ -108,10 +108,10 @@ public class CustomerController {
                     && repeatPassword.equals(newPassword) && newPassword.length() >= 5) {
                 customer.setPassword(passwordEncoder.encode(newPassword));
                 customerService.changePass(customer);
-                attributes.addFlashAttribute("success", "Your password has been changed successfully!");
+                attributes.addFlashAttribute("success", "Sua senha foi mudada com sucesso!");
                 return "redirect:/profile";
             } else {
-                model.addAttribute("message", "Your password is wrong");
+                model.addAttribute("message", "Sua senha esta errada");
                 return "change-password";
             }
         }

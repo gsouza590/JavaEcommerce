@@ -34,6 +34,12 @@ public class HomeController {
         }
         return "home";
     }
+    @GetMapping("/contact")
+    public String contact(Model model) {
+        model.addAttribute("title", "Contato");
+        model.addAttribute("page", "Contato");
+        return "contact";
+    }
 
     }
 

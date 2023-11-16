@@ -24,7 +24,6 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/menu")
-    @Transactional
     public String menu(Model model) {
         model.addAttribute("page", "`Produtos`");
         model.addAttribute("title", "Produtos");
@@ -36,7 +35,6 @@ public class ProductController {
     }
 
     @GetMapping("/product-detail/{id}")
-    @Transactional
     public  String details(@PathVariable ("id")Long id, Model model){
         ProductDto product = productService.getById(id);
         List<ProductDto>productDtoList= productService.findAllByCategory(product.getCategory().getName());
@@ -50,7 +48,6 @@ public class ProductController {
 
 
     @GetMapping("/shop-detail")
-    @Transactional
     public String shopDetail(Model model) {
         List<CategoryDto> categories = categoryService.getCategoriesAndSize();
         model.addAttribute("categories", categories);
@@ -92,7 +89,6 @@ public class ProductController {
         return "shop-detail";
     }
     @GetMapping("/find-products/{id}")
-    @Transactional
     public String productsInCategory(@PathVariable("id") Long id, Model model) {
         List<CategoryDto> categoryDtos = categoryService.getCategoriesAndSize();
         List<ProductDto> productDtos = productService.findByCategoryId(id);
