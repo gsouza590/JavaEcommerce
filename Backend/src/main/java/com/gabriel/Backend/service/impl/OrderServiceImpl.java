@@ -7,11 +7,11 @@ import com.gabriel.Backend.repository.OrderRepository;
 import com.gabriel.Backend.service.OrderService;
 import com.gabriel.Backend.service.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -67,7 +67,13 @@ public class OrderServiceImpl implements OrderService {
     public Order acceptOrder(Long id) {
         Order order = orderRepository.getReferenceById(id);
         order.setAccept(true);
-        order.setDeliveryDate(new Date());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_MONTH, 10);
+        Date novaDataEntrega = calendar.getTime();
+
+        order.setDeliveryDate(novaDataEntrega);
+
         return orderRepository.save(order);
     }
 
