@@ -84,13 +84,16 @@
                         <li th:if="${currentPage != null && currentPage != 0}" class="page-item">
                             <a th:href="@{'/products/' + ${currentPage - 1} + '/'}" class="page-link">Anterior</a>
                         </li>
-                        <li th:each="pageNumber : ${pageNumbers}" th:classappend="${currentPage != null && currentPage == pageNumber - 1 ? 'active' : ''}" class="page-item">
+                        <li th:each="pageNumber : ${pageNumbers}"
+                            th:classappend="${currentPage != null && currentPage == pageNumber - 1 ? 'active' : ''}"
+                            class="page-item">
                             <a th:href="@{'/products/' + ${pageNumber - 1} + '/'}" class="page-link" href="#">
                                 <span th:text="${pageNumber}"></span>
                             </a>
                         </li>
                         <li th:if="${currentPage != null && currentPage + 1 != totalPages}" class="page-item">
-                            <a th:href="@{'/products/' + ${currentPage + 1} + '/'}" class="page-link" href="#">Próximo</a>
+                            <a th:href="@{'/products/' + ${currentPage + 1} + '/'}" class="page-link"
+                               href="#">Próximo</a>
                         </li>
                     </ul>
                 </nav>
