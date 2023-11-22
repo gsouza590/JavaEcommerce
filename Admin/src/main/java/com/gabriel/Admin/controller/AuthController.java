@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -56,9 +58,7 @@ public class AuthController {
     }
 
     @PostMapping("/register-new")
-    public String addNewAdmin(@Valid @ModelAttribute("adminDto") AdminDto adminDto,
-                              BindingResult result,
-                              Model model) {
+    public String addNewAdmin(@Valid @ModelAttribute("adminDto") AdminDto adminDto, BindingResult result, Model model) {
 
         try {
             if (result.hasErrors()) {
@@ -94,5 +94,67 @@ public class AuthController {
         return "register";
 
     }
+
+    @GetMapping("/profile")
+    public String profile(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        String username = principal.getName();
+        Admin admin = adminService.findByUsername(username);
+
+        model.addAttribute("adminDto", admin);
+        model.addAttribute("title", "Minha Conta");
+        model.addAttribute("page", "Minha Conta");
+
+        return "profile";
+    }
+
+    @GetMapping("/update-profile")
+    public String showUpdateProfileForm(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        String username = principal.getName();
+        AdminDto adminDto = adminService.getCustomer(username);
+
+        model.addAttribute("adminDto", adminDto);
+        model.addAttribute("title", "Atualizar Perfil");
+        return "profile";
+    }
+
+
+    @PostMapping("/update-profile")
+    public String updateProfile(@Valid @ModelAttribute("adminDto") AdminDto adminDto,
+                                BindingResult result, Model model, Principal principal) {
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        if (result.hasErrors()) {
+            model.addAttribute("adminDto", adminDto);
+            return "profile";
+        }
+
+        try {
+            String username = principal.getName();
+            adminDto.setUsername(username);
+
+            adminService.update(adminDto);
+
+            model.addAttribute("success", "Perfil atualizado com sucesso!");
+            model.addAttribute("adminDto", adminDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Erro de Servidor ao atualizar perfil");
+        }
+
+        return "redirect:/profile";
+    }
+
 }
+
 

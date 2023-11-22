@@ -62,10 +62,7 @@ public class CustomerController {
         if (principal == null) {
             return "redirect:/login";
         }
-        List<Country> countryList = countryService.findAll();
-        List<City> cities = cityService.findAll();
-        model.addAttribute("countries", countryList);
-        model.addAttribute("cities", cities);
+
         if (result.hasErrors()) {
             return "customer-information";
         }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head th:replace="fragments::head"></head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="~{fragments::sidebar}"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{fragments::top-navbar}"></nav>
+            <!-- End of Topbar -->
+
+            <div class="container-fluid">
+                <form class="form-horizontal" th:action="@{/update-profile}" method="post" th:object="${adminDto}">
+
+                    <fieldset>
+                        <!-- Form Name -->
+                        <legend>Atualizar Informações</legend>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="firstname">Nome </label>
+                            <div class="col-md-4">
+                                <input id="firstname" th:field="*{firstName}" name="firstname"
+                                       class="form-control input-md"
+                                       required="" type="text">
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="lastname">Sobrenome</label>
+                            <div class="col-md-4">
+                                <input id="lastname" th:field="*{lastName}" name="lastname"
+                                       class="form-control input-md"
+                                       required="" type="text">
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer th:replace="~{fragments::footer}"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="~{fragments::scroll}"></a>
+
+<!-- Bootstrap core JavaScript-->
+<div th:replace="~{fragments::script}"></div>
+
+</body>
+
+</html>
