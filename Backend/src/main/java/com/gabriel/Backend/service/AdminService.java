@@ -14,4 +14,5 @@ public interface AdminService {
     Admin  update(AdminDto adminDto);
 
 
+    boolean existsByUsername(String username);
 }

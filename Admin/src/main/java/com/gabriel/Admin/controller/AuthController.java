@@ -12,28 +12,25 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-
 
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
+
     private final AdminService adminService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("title", "Login");
         return "login";
     }
 
-    @RequestMapping("/index")
+    @GetMapping("/index")
     public String index(Model model) {
         model.addAttribute("title", "Home");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -54,24 +51,20 @@ public class AuthController {
     public String forgotPassword(Model model) {
         model.addAttribute("title", "Recuperação Senha");
         return "forgot-password";
-
     }
 
     @PostMapping("/register-new")
-    public String addNewAdmin(@Valid @ModelAttribute("adminDto") AdminDto adminDto, BindingResult result, Model model) {
+    public String addNewAdmin(@Valid @ModelAttribute("adminDto") AdminDto adminDto, BindingResult result,
+                              Model model, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            model.addAttribute("adminDto", adminDto);
+            return "register";
+        }
 
         try {
-            if (result.hasErrors()) {
-                model.addAttribute("adminDto", adminDto);
-                return "register";
-            }
-
             String username = adminDto.getUsername();
-            Admin admin = adminService.findByUsername(username);
-
-            if (admin != null) {
+            if (adminService.existsByUsername(username)) {
                 model.addAttribute("adminDto", adminDto);
-                System.out.println("Admin não nulo");
                 model.addAttribute("emailError", "Seu email já foi registrado");
                 return "register";
             }
@@ -79,20 +72,17 @@ public class AuthController {
             if (adminDto.getPassword().equals(adminDto.getRepeatPassword())) {
                 adminDto.setPassword(passwordEncoder.encode(adminDto.getPassword()));
                 adminService.save(adminDto);
-                System.out.println("Sucesso");
-                model.addAttribute("success", "Registrado com Sucesso!");
-                model.addAttribute("adminDto", adminDto);
+                redirectAttributes.addFlashAttribute("success", "Registrado com Sucesso!");
+                return "redirect:/register";
             } else {
-                model.addAttribute("adminDto", adminDto);
-                model.addAttribute("passwordError", "Sua senha está errada. Tente Novamente!");
-                System.out.println("As senhas não coincidem!");
+                model.addAttribute("passwordError", "Suas senhas não coincidem. Tente novamente!");
+                return "register";
             }
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("errors", "Erro de Servidor!");
+            return "register";
         }
-        return "register";
-
     }
 
     @GetMapping("/profile")
@@ -125,11 +115,10 @@ public class AuthController {
         return "profile";
     }
 
-
     @PostMapping("/update-profile")
     public String updateProfile(@Valid @ModelAttribute("adminDto") AdminDto adminDto,
-                                BindingResult result, Model model, Principal principal) {
-
+                                BindingResult result, Model model, Principal principal,
+                                RedirectAttributes redirectAttributes) {
         if (principal == null) {
             return "redirect:/login";
         }
@@ -142,19 +131,14 @@ public class AuthController {
         try {
             String username = principal.getName();
             adminDto.setUsername(username);
-
             adminService.update(adminDto);
 
-            model.addAttribute("success", "Perfil atualizado com sucesso!");
-            model.addAttribute("adminDto", adminDto);
+            redirectAttributes.addFlashAttribute("success", "Perfil atualizado com sucesso!");
+            return "redirect:/profile";
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("error", "Erro de Servidor ao atualizar perfil");
+            redirectAttributes.addFlashAttribute("error", "Erro de Servidor ao atualizar perfil");
+            return "redirect:/profile";
         }
-
-        return "redirect:/profile";
     }
-
 }
-
-

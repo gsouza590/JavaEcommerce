@@ -61,5 +61,9 @@ public class AdminServiceImpl implements AdminService {
         return adminRepository.save(admin);
     }
 
+    public boolean existsByUsername(String username) {
+        return adminRepository.existsByUsername(username);
+    }
+
 
 }
