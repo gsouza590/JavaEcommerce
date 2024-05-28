@@ -16,8 +16,7 @@ import java.util.Set;
 public class ShoppingCartDto {
     private Long id;
 
-    private Customer customer;
-
+    private CustomerDto customer;
     private double totalPrice;
 
     private int totalItems;

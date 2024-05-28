@@ -1,9 +1,7 @@
 package com.gabriel.Backend.service.impl;
 
 import com.gabriel.Backend.dto.AdminDto;
-import com.gabriel.Backend.dto.CustomerDto;
 import com.gabriel.Backend.model.Admin;
-import com.gabriel.Backend.model.Customer;
 import com.gabriel.Backend.repository.AdminRepository;
 import com.gabriel.Backend.repository.RoleRepository;
 import com.gabriel.Backend.service.AdminService;
@@ -20,7 +18,7 @@ public class AdminServiceImpl implements AdminService {
     private final RoleRepository roleRepository;
 
     @Override
-    public Admin save( AdminDto adminDto) {
+    public Admin save(AdminDto adminDto) {
         Admin admin = new Admin();
         admin.setFirstName(adminDto.getFirstName());
         admin.setLastName(adminDto.getLastName());
@@ -37,25 +35,31 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public AdminDto getCustomer(String name) {
+    public AdminDto getAdmin(String username) {
+        Admin admin = adminRepository.findByUsername(username);
+        if (admin == null) {
+            return null;
+        }
         AdminDto adminDto = new AdminDto();
-        Admin admin = adminRepository.findByUsername(name);
         adminDto.setFirstName(admin.getFirstName());
         adminDto.setLastName(admin.getLastName());
         adminDto.setUsername(admin.getUsername());
         adminDto.setPassword(admin.getPassword());
         return adminDto;
-
     }
 
     @Override
     @Transactional
     public Admin update(AdminDto adminDto) {
         Admin admin = adminRepository.findByUsername(adminDto.getUsername());
-        adminDto.setFirstName(admin.getFirstName());
-        adminDto.setLastName(admin.getLastName());
-        adminDto.setUsername(admin.getUsername());
-
+        if (admin == null) {
+            return null;
+        }
+        admin.setFirstName(adminDto.getFirstName());
+        admin.setLastName(adminDto.getLastName());
+        admin.setPassword(adminDto.getPassword());
         return adminRepository.save(admin);
     }
+
+
 }

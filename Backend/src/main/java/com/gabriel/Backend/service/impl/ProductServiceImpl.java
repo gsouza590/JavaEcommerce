@@ -1,13 +1,13 @@
 package com.gabriel.Backend.service.impl;
 
 import com.gabriel.Backend.dto.ProductDto;
+import com.gabriel.Backend.exceptions.ProductNotFoundException;
 import com.gabriel.Backend.model.Product;
 import com.gabriel.Backend.repository.ProductRepository;
 import com.gabriel.Backend.service.ProductService;
 import com.gabriel.Backend.utils.ImageUpload;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
@@ -22,16 +23,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
     private final ProductRepository productRepository;
-    @Autowired
     private final ImageUpload imageUpload;
     private final ModelMapper modelMapper;
 
     @Override
     public List<ProductDto> findAll() {
-        List<Product> products = productRepository.findAll();
-        return ProductDto.ProductToDto(products);
+        return ProductDto.ProductToDto(productRepository.findAll());
     }
 
     @Override
@@ -43,50 +41,32 @@ public class ProductServiceImpl implements ProductService {
     public Product save(MultipartFile imageProduct, ProductDto productDto) {
         try {
             Product product = modelMapper.map(productDto, Product.class);
-
-            // Tratar o upload da imagem
-            if (imageProduct != null) {
-                if (imageUpload.uploadImage(imageProduct)) {
-                    System.out.println("Upload realizado com sucesso");
-                }
-                product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
-            }
+            handleImageUpload(imageProduct, product);
             product.set_activated(true);
             product.set_deleted(false);
-
             return productRepository.save(product);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image", e);
         }
     }
 
     @Override
     public Product update(MultipartFile imageProduct, ProductDto productDto) {
         try {
-            Product product = productRepository.getReferenceById(productDto.getId());
-
+            Product product = productRepository.findById(productDto.getId())
+                    .orElseThrow(() -> new ProductNotFoundException("Product with ID " + productDto.getId() + " not found."));
             modelMapper.map(productDto, product);
-
-            if (imageProduct != null) {
-                if (!imageUpload.checkExisted(imageProduct)) {
-                    System.out.println("Upload realizado com sucesso");
-                }
-                product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
-            }
-
+            handleImageUpload(imageProduct, product);
             return productRepository.save(product);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image", e);
         }
-
-        return null;
     }
 
     @Override
     public void deleteById(Long id) {
-        Product product = productRepository.getReferenceById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " not found."));
         product.set_deleted(true);
         product.set_activated(false);
         productRepository.save(product);
@@ -94,7 +74,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void enableById(Long id) {
-        Product product = productRepository.getReferenceById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " not found."));
         product.set_activated(true);
         product.set_deleted(false);
         productRepository.save(product);
@@ -102,7 +83,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getById(Long id) {
-        Product product = productRepository.getReferenceById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " not found."));
         return modelMapper.map(product, ProductDto.class);
     }
 
@@ -113,27 +95,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDto> searchProducts(int pageNo, String keyword) {
-        List<Product> products = productRepository.findAllByNameOrDescription(keyword);
-        List<ProductDto> productDtoList = ProductDto.ProductToDto(products);
-        Pageable pageable = PageRequest.of(pageNo, 5);
-        Page<ProductDto> dtoPage = toPage(productDtoList, pageable);
-        return dtoPage;
+        List<ProductDto> productDtoList = ProductDto.ProductToDto(productRepository.findAllByNameOrDescription(keyword));
+        return toPage(productDtoList, PageRequest.of(pageNo, 5));
     }
 
-
     @Override
-    public  List<ProductDto>searchProducts(String keyword) {
-
+    public List<ProductDto> searchProducts(String keyword) {
         return ProductDto.ProductToDto(productRepository.findAllByNameOrDescription(keyword));
     }
 
-
     @Override
     public Page<ProductDto> findAllProducts(int pageNo) {
-        Pageable pageable = PageRequest.of(pageNo, 5);
         List<ProductDto> productDtoLists = this.findAll();
-        Page<ProductDto> productDtoPage = toPage(productDtoLists, pageable);
-        return productDtoPage;
+        return toPage(productDtoLists, PageRequest.of(pageNo, 5));
     }
 
     @Override
@@ -154,25 +128,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> filterLowerProducts() {
         return ProductDto.ProductToDto(productRepository.filterLowerProducts());
-
     }
 
     @Override
     public List<ProductDto> filterHighProducts() {
         return ProductDto.ProductToDto(productRepository.filterHighProducts());
-
     }
 
+    private void handleImageUpload(MultipartFile imageProduct, Product product) throws IOException {
+        if (imageProduct != null && imageUpload.uploadImage(imageProduct)) {
+            product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
+        }
+    }
 
-    private Page toPage(List list, Pageable pageable) {
+    private <T> Page<T> toPage(List<T> list, Pageable pageable) {
         int startIndex = (int) pageable.getOffset();
         int endIndex = Math.min(startIndex + pageable.getPageSize(), list.size());
-
-        if (startIndex >= endIndex) {
-            return Page.empty();
-        }
-
-        return new PageImpl<>(list.subList(startIndex, endIndex), pageable, list.size());
+        return startIndex >= endIndex ? Page.empty() : new PageImpl<>(list.subList(startIndex, endIndex), pageable, list.size());
     }
-
 }
