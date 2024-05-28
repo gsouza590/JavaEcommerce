@@ -19,8 +19,24 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class AdminConfiguration {
 
+    private static final String[] PUBLIC_MATCHERS = {
+            "/forgot-password",
+            "/register",
+            "/register-new"
+    };
+
+    private static final String[] ADMIN_MATCHERS = {
+            "/admin/**"
+    };
+
+    private static final String LOGIN_PAGE = "/login";
+    private static final String LOGIN_PROCESSING_URL = "/do-login";
+    private static final String DEFAULT_SUCCESS_URL = "/index";
+    private static final String LOGOUT_URL = "/logout";
+    private static final String LOGOUT_SUCCESS_URL = "/login?logout";
+
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new AdminServiceConfig();
     }
 
@@ -28,48 +44,51 @@ public class AdminConfiguration {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
-        return  new BCryptPasswordEncoder();
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain filterChain ( HttpSecurity httpSecurity) throws  Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        configureAuthentication(httpSecurity);
+        configureAuthorization(httpSecurity);
 
-        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
-
-        authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-
-        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-
-        httpSecurity  .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests( author ->
-                        author.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                                .requestMatchers("/forgot-password", "/register", "/register-new").permitAll()
-                                .anyRequest().authenticated()
-
-                )
-                .formLogin(login ->
-                        login.loginPage("/login")
-                                .loginProcessingUrl("/do-login")
-                                .defaultSuccessUrl("/index", true)
-                                .permitAll()
-                )
-                .logout(logout ->
-                        logout.invalidateHttpSession(true)
-                                .clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessUrl("/login?logout")
-                                .permitAll()
-                )
-                .authenticationManager(authenticationManager)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                )
-        ;
         return httpSecurity.build();
     }
 
-}
+    private void configureAuthentication(HttpSecurity httpSecurity) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
+        httpSecurity.authenticationManager(authenticationManager);
+    }
+
+    private void configureAuthorization(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(ADMIN_MATCHERS).hasAuthority("ADMIN")
+                        .requestMatchers(PUBLIC_MATCHERS).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(formLogin -> formLogin
+                        .loginPage(LOGIN_PAGE)
+                        .loginProcessingUrl(LOGIN_PROCESSING_URL)
+                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL, true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_URL))
+                        .logoutSuccessUrl(LOGOUT_SUCCESS_URL)
+                        .permitAll()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                );
+    }
+}

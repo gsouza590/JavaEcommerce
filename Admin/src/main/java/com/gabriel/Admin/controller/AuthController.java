@@ -118,7 +118,7 @@ public class AuthController {
         }
 
         String username = principal.getName();
-        AdminDto adminDto = adminService.getCustomer(username);
+        AdminDto adminDto = adminService.getAdmin(username);
 
         model.addAttribute("adminDto", adminDto);
         model.addAttribute("title", "Atualizar Perfil");

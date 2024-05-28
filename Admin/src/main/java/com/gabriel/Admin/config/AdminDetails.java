@@ -4,26 +4,30 @@ import com.gabriel.Backend.model.Roles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Component
 public class AdminDetails implements UserDetails {
-    private Admin admin;
+    private final Admin admin;
+
+    public AdminDetails(Admin admin) {
+        this.admin = admin;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        for (Roles role : admin.getRoles()
-        ) {
-
+        for (Roles role : admin.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
-
         }
-        return null;
+        return authorities;
     }
+
 
     @Override
     public String getPassword() {
