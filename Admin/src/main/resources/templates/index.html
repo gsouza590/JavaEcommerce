@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 
-<head th:replace="fragments :: header">
+<head th:replace="~{fragments :: header}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard for Bits&Bytes">
+    <meta name="author" content="Bits&Bytes">
+    <title>Dashboard - Bits&Bytes</title>
 </head>
 
 <body id="page-top">
@@ -10,7 +15,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul th:replace="fragments :: sidebar"></ul>
+    <ul th:replace="~{fragments :: sidebar}"></ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -20,8 +25,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav th:replace="~{fragments::top-navbar}">
-            </nav>
+            <nav th:replace="~{fragments::top-navbar}"></nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -30,7 +34,6 @@
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-
                 </div>
 
             </div>
@@ -56,11 +59,11 @@
 <!-- End of Page Wrapper -->
 
 <!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
+<a class="scroll-to-top rounded" href="#page-top" aria-label="Scroll to Top">
     <i class="fas fa-angle-up"></i>
 </a>
 
-<div th:replace="fragments::script"></div>
+<div th:replace="~{fragments::script}"></div>
 <!-- Page level plugins -->
 <script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
 

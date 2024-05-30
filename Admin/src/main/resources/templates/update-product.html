@@ -10,8 +10,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul th:replace="~{fragments::sidebar}">
-    </ul>
+    <ul th:replace="~{fragments::sidebar}"></ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -21,18 +20,17 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav th:replace="~{fragments::top-navbar}">
-            </nav>
+            <nav th:replace="~{fragments::top-navbar}"></nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <form class="form-horizontal" th:action="@{/update-product/{id}(id = ${productDto.id})}" method="post"
-                      th:object="${productDto}"
-                      enctype="multipart/form-data">
+                      th:object="${productDto}" enctype="multipart/form-data">
                     <fieldset>
                         <!-- Form Name -->
                         <legend>Atualizar Produto</legend>
+
                         <!-- Text input-->
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="product_name">Nome Produto</label>
@@ -68,7 +66,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="available_quantity">Quantidade Disponivel</label>
+                            <label class="col-md-4 control-label" for="available_quantity">Quantidade Disponível</label>
                             <div class="col-md-4">
                                 <input id="available_quantity" th:field="*{currentQuantity}" name="available_quantity"
                                        class="form-control input-md" required="" type="text">
@@ -83,35 +81,28 @@
                                        required="" type="text">
                             </div>
                         </div>
-                        <!--                        <div class="form-group">-->
-                        <!--                            <div class="col-md-4">-->
-                        <!--                                <input id="url" name="currentPage" th:field = "*{currentPage}" class="form-control input-md" required="" type="hidden">-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
-                        <!-- Text input-->
+
+                        <!-- File input -->
                         <div class="form-group">
+                            <label class="col-md-4 control-label" for="image">Imagem</label>
                             <div class="col-md-4">
-                                <!-- File Button -->
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" for="image">Imagem</label>
-                                    <div class="col-md-4">
-                                        <img class="my-product-image" style="height: 40px; width: 40px;" alt=""
-                                             th:src="'data:image/jpeg;base64,' + *{image}">
-                                        <input id="image" name="imageProduct" class="input-file" type="file">
-                                    </div>
-                                </div>
+                                <img class="my-product-image" style="height: 40px; width: 40px;" alt=""
+                                     th:src="'data:image/jpeg;base64,' + ${productDto.image}">
+                                <input id="image" name="imageProduct" class="input-file" type="file">
                             </div>
                         </div>
+
                         <button type="submit" class="btn btn-primary">Atualizar</button>
                     </fieldset>
                 </form>
             </div>
+            <!-- End of Page Content -->
+
         </div>
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <footer th:replace="~{fragments::footer}">
-        </footer>
+        <footer th:replace="~{fragments::footer}"></footer>
         <!-- End of Footer -->
 
     </div>
@@ -121,9 +112,7 @@
 <!-- End of Page Wrapper -->
 
 <!-- Scroll to Top Button-->
-<a th:replace="~{fragments::scroll}">
-</a>
-
+<a th:replace="~{fragments::scroll}"></a>
 
 <!-- Bootstrap core JavaScript-->
 <div th:replace="~{fragments::script}"></div>

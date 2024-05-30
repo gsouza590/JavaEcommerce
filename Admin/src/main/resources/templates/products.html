@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 
-<head th:replace="fragments :: header">
-</head>
+<head th:replace="~{fragments :: header}"></head>
 
 <body id="page-top">
 
@@ -10,7 +9,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul th:replace="fragments :: sidebar"></ul>
+    <ul th:replace="~{fragments :: sidebar}"></ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -20,22 +19,19 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav th:replace="~{fragments::top-navbar}">
-            </nav>            <!-- End of Topbar -->
-
+            <nav th:replace="~{fragments :: top-navbar}"></nav>
+            <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="input-group" style="width: 30%; margin-bottom: 20px;">
                     <form th:action="@{/search-products/0}" method="get">
-                        <input type="text" class="form-control rounded" placeholder="Buscar" name="keyword"
-                               aria-label="Search"
-                               aria-describedby="search-addon"/>
-                        <button type="submit" class="btn btn-outline-primary">buscar</button>
+                        <input type="text" class="form-control rounded" placeholder="Buscar" name="keyword" aria-label="Search" aria-describedby="search-addon"/>
+                        <button type="submit" class="btn btn-outline-primary">Buscar</button>
                     </form>
                 </div>
                 <a th:href="@{/add-product}" class="btn btn-primary">Adicionar Produto</a>
-                <p th:if="${size == 0} ">Não há Produtos</p>
+                <p th:if="${size == 0}">Não há Produtos</p>
                 <div th:if="${success}" class="text-center alert alert-success">
                     <p th:text="${success}"></p>
                 </div>
@@ -61,22 +57,18 @@
                         <td th:text="${product.costPrice}"></td>
                         <td th:text="${product.currentQuantity}"></td>
                         <td>
-                            <img class="my-product-image" style="height: 40px; width: 40px;" alt=""
-                                 th:src="'data:image/jpeg;base64,' + ${product.image}">
-                        </td>
-                        <td><a th:href="@{/update-product/{id}(id= ${product.id})}"
-                               class="btn btn-primary">Atualizar</a>
+                            <img class="my-product-image" style="height: 40px; width: 40px;" alt="" th:src="'data:image/jpeg;base64,' + ${product.image}">
                         </td>
                         <td>
-                            <a th:if="${product.is_deleted} == true" th:href="@{/enable-product(id = ${product.id})}"
-                               class="btn btn-primary">Ativar</a>
-                            <a th:if="${product.is_deleted} == false" th:href="@{/delete-product(id = ${product.id})}"
-                               class=" btn btn-danger">Deletar</a>
+                            <a th:href="@{/update-product/{id}(id=${product.id})}" class="btn btn-primary">Atualizar</a>
+                        </td>
+                        <td>
+                            <a th:if="${product.is_deleted}" th:href="@{/enable-product(id=${product.id})}" class="btn btn-primary">Ativar</a>
+                            <a th:if="${!product.is_deleted}" th:href="@{/delete-product(id=${product.id})}" class="btn btn-danger">Deletar</a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-
 
                 <!-- Pagination -->
                 <nav aria-label="...">
@@ -84,46 +76,34 @@
                         <li th:if="${currentPage != null && currentPage != 0}" class="page-item">
                             <a th:href="@{'/products/' + ${currentPage - 1} + '/'}" class="page-link">Anterior</a>
                         </li>
-                        <li th:each="pageNumber : ${pageNumbers}"
-                            th:classappend="${currentPage != null && currentPage == pageNumber - 1 ? 'active' : ''}"
-                            class="page-item">
-                            <a th:href="@{'/products/' + ${pageNumber - 1} + '/'}" class="page-link" href="#">
+                        <li th:each="pageNumber : ${pageNumbers}" th:classappend="${currentPage != null && currentPage == pageNumber - 1 ? 'active' : ''}" class="page-item">
+                            <a th:href="@{'/products/' + ${pageNumber - 1} + '/'}" class="page-link">
                                 <span th:text="${pageNumber}"></span>
                             </a>
                         </li>
                         <li th:if="${currentPage != null && currentPage + 1 != totalPages}" class="page-item">
-                            <a th:href="@{'/products/' + ${currentPage + 1} + '/'}" class="page-link"
-                               href="#">Próximo</a>
+                            <a th:href="@{'/products/' + ${currentPage + 1} + '/'}" class="page-link">Próximo</a>
                         </li>
                     </ul>
                 </nav>
                 <!-- Pagination -->
-
-
             </div>
             <!-- /.container-fluid -->
-
         </div>
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <footer th:replace="~{fragments::footer}">
-        </footer>
+        <footer th:replace="~{fragments :: footer}"></footer>
         <!-- End of Footer -->
-
     </div>
     <!-- End of Content Wrapper -->
-
 </div>
 <!-- End of Page Wrapper -->
 
 <!-- Scroll to Top Button-->
-<a th:replace="~{fragments::scroll}">
-</a>
-
+<a th:replace="~{fragments :: scroll}"></a>
 
 <!-- Bootstrap core JavaScript-->
-<div th:replace="~{fragments::script}"></div>
+<div th:replace="~{fragments :: script}"></div>
 </body>
-
 </html>
