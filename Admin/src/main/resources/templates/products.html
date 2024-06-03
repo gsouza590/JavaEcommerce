@@ -27,10 +27,10 @@
                 <div class="input-group" style="width: 30%; margin-bottom: 20px;">
                     <form th:action="@{/search-products/0}" method="get">
                         <input type="text" class="form-control rounded" placeholder="Buscar" name="keyword" aria-label="Search" aria-describedby="search-addon"/>
-                        <button type="submit" class="btn btn-outline-primary">Buscar</button>
+                        <button style="margin-top: 5px;" type="submit" class="btn btn-outline-primary">Buscar</button>
                     </form>
                 </div>
-                <a th:href="@{/add-product}" class="btn btn-primary">Adicionar Produto</a>
+                <a style="margin-bottom: 10px;" th:href="@{/add-product}" class="btn btn-primary">Adicionar Produto</a>
                 <p th:if="${size == 0}">Não há Produtos</p>
                 <div th:if="${success}" class="text-center alert alert-success">
                     <p th:text="${success}"></p>
