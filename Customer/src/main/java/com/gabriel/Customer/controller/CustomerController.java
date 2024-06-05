@@ -7,7 +7,6 @@ import com.gabriel.Backend.service.CityService;
 import com.gabriel.Backend.service.CountryService;
 import com.gabriel.Backend.service.CustomerService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,16 +22,17 @@ import java.util.List;
 
 @Controller
 public class CustomerController {
+    private final CustomerService customerService;
+    private final CountryService countryService;
+    private final CityService cityService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private CustomerService customerService;
-    @Autowired
-    private CountryService countryService;
-    @Autowired
-    private CityService cityService;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    public CustomerController(CustomerService customerService, CountryService countryService, CityService cityService, BCryptPasswordEncoder passwordEncoder) {
+        this.customerService = customerService;
+        this.countryService = countryService;
+        this.cityService = cityService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping("/profile")
     public String profile(Model model, Principal principal) {
@@ -97,21 +97,26 @@ public class CustomerController {
                              Principal principal) {
         if (principal == null) {
             return "redirect:/login";
-        } else {
-            CustomerDto customer = customerService.getCustomer(principal.getName());
-            if (passwordEncoder.matches(oldPassword, customer.getPassword())
-                    && !passwordEncoder.matches(newPassword, oldPassword)
-                    && !passwordEncoder.matches(newPassword, customer.getPassword())
-                    && repeatPassword.equals(newPassword) && newPassword.length() >= 5) {
+        }
+        CustomerDto customer = customerService.getCustomer(principal.getName());
+        if (passwordEncoder.matches(oldPassword, customer.getPassword())) {
+            if (!passwordEncoder.matches(newPassword, oldPassword) &&
+                    !passwordEncoder.matches(newPassword, customer.getPassword()) &&
+                    repeatPassword.equals(newPassword) && newPassword.length() >= 5) {
+
                 customer.setPassword(passwordEncoder.encode(newPassword));
                 customerService.changePass(customer);
                 attributes.addFlashAttribute("success", "Sua senha foi mudada com sucesso!");
                 return "redirect:/profile";
             } else {
-                model.addAttribute("message", "Sua senha esta errada");
-                return "change-password";
+                model.addAttribute("message", "As novas senhas não coincidem ou são inválidas.");
             }
+        } else {
+            model.addAttribute("message", "Sua senha antiga está incorreta.");
         }
+        return "change-password";
     }
-
 }
+
+
+
