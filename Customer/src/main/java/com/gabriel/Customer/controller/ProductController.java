@@ -5,27 +5,24 @@ import com.gabriel.Backend.dto.ProductDto;
 import com.gabriel.Backend.model.Category;
 import com.gabriel.Backend.service.CategoryService;
 import com.gabriel.Backend.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    CategoryService categoryService;
-    @Autowired
-    ProductService productService;
+    private final CategoryService categoryService;
+    private final ProductService productService;
 
     @GetMapping("/menu")
     public String menu(Model model) {
-        model.addAttribute("page", "`Produtos`");
+        model.addAttribute("page", "Produtos");
         model.addAttribute("title", "Produtos");
         List<Category> categories = categoryService.findAllByActivated();
         List<ProductDto> products = productService.products();
@@ -35,28 +32,26 @@ public class ProductController {
     }
 
     @GetMapping("/product-detail/{id}")
-    public  String details(@PathVariable ("id")Long id, Model model){
+    public String details(@PathVariable("id") Long id, Model model) {
         ProductDto product = productService.getById(id);
-        List<ProductDto>productDtoList= productService.findAllByCategory(product.getCategory().getName());
+        List<ProductDto> productDtoList = productService.findAllByCategory(product.getCategory().getName());
         model.addAttribute("products", productDtoList);
-        model.addAttribute("title","Detalhes do Produto");
-        model.addAttribute("page","Detalhes do Produto");
+        model.addAttribute("title", "Detalhes do Produto");
+        model.addAttribute("page", "Detalhes do Produto");
         model.addAttribute("productDetail", product);
         return "product-detail";
-
     }
-
 
     @GetMapping("/shop-detail")
     public String shopDetail(Model model) {
         List<CategoryDto> categories = categoryService.getCategoriesAndSize();
-        model.addAttribute("categories", categories);
         List<ProductDto> products = productService.randomProduct();
         List<ProductDto> listView = productService.listViewProducts();
         model.addAttribute("productViews", listView);
         model.addAttribute("title", "Produtos");
         model.addAttribute("page", "Produtos");
         model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
         return "shop-detail";
     }
 
@@ -64,30 +59,30 @@ public class ProductController {
     @Transactional
     public String filterHighPrice(Model model) {
         List<CategoryDto> categories = categoryService.getCategoriesAndSize();
-        model.addAttribute("categories", categories);
         List<ProductDto> products = productService.filterHighProducts();
         List<ProductDto> listView = productService.listViewProducts();
         model.addAttribute("title", "Produtos");
         model.addAttribute("page", "Produtos");
         model.addAttribute("productViews", listView);
         model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
         return "shop-detail";
     }
-
 
     @GetMapping("/lower-price")
     @Transactional
     public String filterLowerPrice(Model model) {
         List<CategoryDto> categories = categoryService.getCategoriesAndSize();
-        model.addAttribute("categories", categories);
         List<ProductDto> products = productService.filterLowerProducts();
         List<ProductDto> listView = productService.listViewProducts();
         model.addAttribute("productViews", listView);
         model.addAttribute("title", "Produtos");
         model.addAttribute("page", "Produtos");
         model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
         return "shop-detail";
     }
+
     @GetMapping("/find-products/{id}")
     public String productsInCategory(@PathVariable("id") Long id, Model model) {
         List<CategoryDto> categoryDtos = categoryService.getCategoriesAndSize();
@@ -95,7 +90,7 @@ public class ProductController {
         List<ProductDto> listView = productService.listViewProducts();
         model.addAttribute("productViews", listView);
         model.addAttribute("categories", categoryDtos);
-        model.addAttribute("title", productDtos.get(0).getCategory().getName());
+        model.addAttribute("title", productDtos.isEmpty() ? "Produtos" : productDtos.get(0).getCategory().getName());
         model.addAttribute("page", "Produtos");
         model.addAttribute("products", productDtos);
         return "shop-detail";
