@@ -32,21 +32,22 @@
                     <fieldset>
                         <!-- Form Name -->
                         <legend>Adicionar Produto</legend>
+
                         <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="product_name">Nome do Produto</label>
+                        <div class="form-group row">
+                            <label for="product_name" class="col-md-2 col-form-label">Nome do Produto</label>
                             <div class="col-md-4">
                                 <input id="product_name" th:field="*{name}" name="product_name"
-                                       class="form-control input-md" required="" type="text">
+                                       class="form-control" required="" type="text" placeholder="Digite o nome do produto" aria-required="true">
                             </div>
                         </div>
 
                         <!-- Select Basic -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="product_categories">Categoria</label>
+                        <div class="form-group row">
+                            <label for="product_categories" class="col-md-2 col-form-label">Categoria</label>
                             <div class="col-md-4">
                                 <select id="product_categories" th:field="*{category}" name="product_categories"
-                                        class="form-control">
+                                        class="form-control" aria-required="true">
                                     <option th:value="null">-Selecione-</option>
                                     <option th:each="category : ${categories}"
                                             th:value="${category.id}"
@@ -57,44 +58,45 @@
                         </div>
 
                         <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="description">Descrição</label>
+                        <div class="form-group row">
+                            <label for="description" class="col-md-2 col-form-label">Descrição</label>
                             <div class="col-md-4">
                                 <input id="description" th:field="*{description}" name="description"
-                                       class="form-control input-md" required="" type="text">
+                                       class="form-control" required="" type="text" placeholder="Digite a descrição" aria-required="true">
                             </div>
                         </div>
 
                         <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="available_quantity">Quantidade Disponivel</label>
+                        <div class="form-group row">
+                            <label for="available_quantity" class="col-md-2 col-form-label">Quantidade Disponível</label>
                             <div class="col-md-4">
                                 <input id="available_quantity" th:field="*{currentQuantity}" name="available_quantity"
-                                       class="form-control input-md" required="" type="text">
+                                       class="form-control" required="" type="number" placeholder="Digite a quantidade disponível" aria-required="true">
                             </div>
                         </div>
 
                         <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="price">Preço</label>
+                        <div class="form-group row">
+                            <label for="price" class="col-md-2 col-form-label">Preço</label>
                             <div class="col-md-4">
-                                <input id="price" name="price" th:field="*{costPrice}" class="form-control input-md"
-                                       required="" type="text">
+                                <input id="price" name="price" th:field="*{costPrice}" class="form-control"
+                                       required="" type="number" step="0.01" placeholder="Digite o preço" aria-required="true">
                             </div>
                         </div>
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <div class="col-md-4">
-                                <!-- File Button -->
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" for="image">Imagem</label>
-                                    <div class="col-md-4">
-                                        <input id="image" name="imageProduct" class="input-file" type="file">
-                                    </div>
-                                </div>
+
+                        <!-- File input-->
+                        <div class="form-group row">
+                            <label for="image" class="col-md-2 col-form-label">Imagem</label>
+                            <div class="col-md-10">
+                                <input id="image" name="imageProduct" class="form-control-file" type="file" aria-label="Imagem do Produto">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
+
+                        <div class="form-group row">
+                            <div class="col-md-10 offset-md-2">
+                                <button type="submit" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </div>
                     </fieldset>
                 </form>
             </div>
@@ -113,9 +115,7 @@
 <!-- End of Page Wrapper -->
 
 <!-- Scroll to Top Button-->
-<a th:replace="~{fragments::scroll}">
-</a>
-
+<a th:replace="~{fragments::scroll}"></a>
 
 <!-- Bootstrap core JavaScript-->
 <div th:replace="~{fragments::script}"></div>

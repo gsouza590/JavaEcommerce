@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 
-<head th:replace="fragments::head"></head>
+<head th:replace="~{fragments::head}"></head>
 
 <body id="page-top">
 
@@ -16,42 +16,51 @@
     <div id="content-wrapper" class="d-flex flex-column">
 
         <!-- Main Content -->
-        <div id="content">
+        <main id="content">
 
             <!-- Topbar -->
             <nav th:replace="~{fragments::top-navbar}"></nav>
             <!-- End of Topbar -->
 
+            <!-- Begin Page Content -->
             <div class="container-fluid">
                 <form class="form-horizontal" th:action="@{/update-profile}" method="post" th:object="${adminDto}">
-
                     <fieldset>
                         <!-- Form Name -->
                         <legend>Atualizar Informações</legend>
 
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="firstname">Nome </label>
+                        <!-- Nome -->
+                        <div class="form-group row">
+                            <label for="firstname" class="col-md-4 col-form-label">Nome</label>
                             <div class="col-md-4">
                                 <input id="firstname" th:field="*{firstName}" name="firstname"
-                                       class="form-control input-md"
-                                       required="" type="text">
+                                       class="form-control" required type="text">
                             </div>
                         </div>
 
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="lastname">Sobrenome</label>
+                        <!-- Sobrenome -->
+                        <div class="form-group row">
+                            <label for="lastname" class="col-md-4 col-form-label">Sobrenome</label>
                             <div class="col-md-4">
                                 <input id="lastname" th:field="*{lastName}" name="lastname"
-                                       class="form-control input-md"
-                                       required="" type="text">
+                                       class="form-control" required type="text">
+                            </div>
+                        </div>
+
+                        <!-- Botão de envio -->
+                        <div class="form-group row">
+                            <div class="col-md-8 offset-md-4">
+                                <button type="submit" class="btn btn-primary">Atualizar</button>
                             </div>
                         </div>
                     </fieldset>
                 </form>
             </div>
-        </div>
+            <!-- /.container-fluid -->
+
+        </main>
+        <!-- End of Main Content -->
+
         <!-- Footer -->
         <footer th:replace="~{fragments::footer}"></footer>
         <!-- End of Footer -->
