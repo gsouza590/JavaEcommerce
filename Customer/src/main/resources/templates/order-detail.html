@@ -3,32 +3,24 @@
 <!-- Basic -->
 
 <head th:replace="~{fragments::head}">
-
-
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 
 <body>
 <!-- Start Main Top -->
-<div th:replace="~{fragments::main-top}">
-</div>
+<div th:replace="~{fragments::main-top}"></div>
 <!-- End Main Top -->
 
-
 <!-- Start Main Top -->
-<header th:replace="~{fragments::main-header}">
-</header>
+<header th:replace="~{fragments::main-header}"></header>
 <!-- End Main Top -->
 
 <!-- Start Top Search -->
-<div th:replace="~{fragments::top-search}">
-</div>
+<div th:replace="~{fragments::top-search}"></div>
 <!-- End Top Search -->
-
 
 <!-- Start Cart  -->
 <div class="cart-box-main">
@@ -48,15 +40,14 @@
                         <tr th:each="orderdetail : ${order.orderDetailList}">
                             <td class="thumbnail-img">
                                 <a href="#">
-                                    <img class="img-fluid"
-                                         th:src="'data:image/jpeg;base64,' + ${orderdetail.product.image}" alt=""/>
+                                    <img class="img-fluid" th:src="'data:image/jpeg;base64,' + ${orderdetail.product.image}" alt="Imagem do Produto"/>
                                 </a>
                             </td>
                             <td class="name-pr">
                                 <p th:text="${orderdetail.product.name}"></p>
                             </td>
                             <td class="price-pr">
-                                <p th:text="${orderdetail.product.costPrice}"></p>
+                                <p th:text="'R$ ' + ${orderdetail.product.costPrice}"></p>
                             </td>
                         </tr>
                         </tbody>
@@ -67,13 +58,13 @@
                             <div class="order-box">
                                 <h3>Resumo</h3>
                                 <div class="d-flex">
-                                    <p>Quantidade [(${order.quantity})]</p>
+                                    <p>Quantidade</p>
+                                    <div class="ml-auto font-weight-bold" th:text="${order.quantity}"></div>
                                 </div>
                                 <div class="d-flex">
                                     <h4>SubTotal</h4>
-                                    <div class="ml-auto font-weight-bold" th:text="${order.totalPrice}"></div>
+                                    <div class="ml-auto font-weight-bold" th:text="'R$ ' + ${order.totalPrice}"></div>
                                 </div>
-
                                 <hr class="my-1">
                             </div>
                         </div>
@@ -85,12 +76,9 @@
 </div>
 <!-- End Cart -->
 
-
-
-
 <!-- Start Footer  -->
 <footer th:replace="~{fragments::footer}"></footer>
-
+<!-- End Footer -->
 
 <div th:replace="~{fragments::script}"></div>
 </body>
