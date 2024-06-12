@@ -3,8 +3,12 @@ package com.gabriel.Admin.controller;
 import com.gabriel.Backend.dto.AdminDto;
 import com.gabriel.Backend.model.Admin;
 import com.gabriel.Backend.service.AdminService;
+import com.gabriel.Backend.service.exceptions.Admin.AdminAlreadyExistsException;
+import com.gabriel.Backend.service.exceptions.Admin.AdminNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +29,7 @@ import java.security.Principal;
 public class AuthController {
     private final AdminService adminService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 
     @RequestMapping("/login")
@@ -60,37 +65,32 @@ public class AuthController {
     @PostMapping("/register-new")
     public String addNewAdmin(@Valid @ModelAttribute("adminDto") AdminDto adminDto, BindingResult result, Model model) {
 
+        if (result.hasErrors()) {
+            setupModelForRegister(model, adminDto);
+            return "register";
+        }
+
+        if (!adminDto.getPassword().equals(adminDto.getRepeatPassword())) {
+            setupModelForRegister(model, adminDto);
+            model.addAttribute("passwordError", "Sua senha está errada. Tente Novamente!");
+            logger.info("As senhas não coincidem!");
+            return "register";
+        }
         try {
-            if (result.hasErrors()) {
-                model.addAttribute("adminDto", adminDto);
-                return "register";
-            }
-
-            String username = adminDto.getUsername();
-            Admin admin = adminService.findByUsername(username);
-
-            if (admin != null) {
-                model.addAttribute("adminDto", adminDto);
-                System.out.println("Admin não nulo");
-                model.addAttribute("emailError", "Seu email já foi registrado");
-                return "register";
-            }
-
-            if (adminDto.getPassword().equals(adminDto.getRepeatPassword())) {
-                adminDto.setPassword(passwordEncoder.encode(adminDto.getPassword()));
-                adminService.save(adminDto);
-                System.out.println("Sucesso");
-                model.addAttribute("success", "Registrado com Sucesso!");
-                model.addAttribute("adminDto", adminDto);
-            } else {
-                model.addAttribute("adminDto", adminDto);
-                model.addAttribute("passwordError", "Sua senha está errada. Tente Novamente!");
-                System.out.println("As senhas não coincidem!");
-            }
+            adminDto.setPassword(passwordEncoder.encode(adminDto.getPassword()));
+            adminService.save(adminDto);
+            setupModelForRegister(model, adminDto);
+            model.addAttribute("success", "Registrado com Sucesso!");
+            logger.info("Sucesso");
+        } catch (AdminAlreadyExistsException e) {
+            setupModelForRegister(model, adminDto);
+            model.addAttribute("emailError", e.getMessage());
+            logger.info("Admin não nulo");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Erro de Servidor", e);
             model.addAttribute("errors", "Erro de Servidor!");
         }
+
         return "register";
 
     }
@@ -102,13 +102,18 @@ public class AuthController {
         }
 
         String username = principal.getName();
-        Admin admin = adminService.findByUsername(username);
 
-        model.addAttribute("adminDto", admin);
-        model.addAttribute("title", "Minha Conta");
-        model.addAttribute("page", "Minha Conta");
+        try {
+            Admin admin = adminService.findByUsername(username);
+            model.addAttribute("adminDto", admin);
+            model.addAttribute("title", "Minha Conta");
+            model.addAttribute("page", "Minha Conta");
 
-        return "profile";
+            return "profile";
+        } catch (AdminNotFoundException e) {
+            logger.error(e.getMessage());
+            return "redirect:/login";
+        }
     }
 
     @GetMapping("/update-profile")
@@ -116,25 +121,29 @@ public class AuthController {
         if (principal == null) {
             return "redirect:/login";
         }
-
         String username = principal.getName();
-        AdminDto adminDto = adminService.getCustomer(username);
+        try {
+            AdminDto adminDto = adminService.getAdmin(username);
+            model.addAttribute("adminDto", adminDto);
+            model.addAttribute("title", "Atualizar Perfil");
+            return "profile";
+        } catch (AdminNotFoundException e) {
+            logger.error(e.getMessage());
+            return "redirect:/login";
+        }
 
-        model.addAttribute("adminDto", adminDto);
-        model.addAttribute("title", "Atualizar Perfil");
-        return "profile";
     }
 
 
     @PostMapping("/update-profile")
-    public String updateProfile(@Valid @ModelAttribute("adminDto") AdminDto adminDto,
-                                BindingResult result, Model model, Principal principal) {
-
+    public String updateProfile(@Valid @ModelAttribute("adminDto") AdminDto adminDto, BindingResult result, Model model, Principal principal) {
         if (principal == null) {
+            logger.warn("Principal is null, redirecting to login.");
             return "redirect:/login";
         }
 
         if (result.hasErrors()) {
+            logger.info("Validation errors found in form submission.");
             model.addAttribute("adminDto", adminDto);
             return "profile";
         }
@@ -142,19 +151,28 @@ public class AuthController {
         try {
             String username = principal.getName();
             adminDto.setUsername(username);
+            logger.info("Updating profile for user: {}", username);
 
             adminService.update(adminDto);
-
             model.addAttribute("success", "Perfil atualizado com sucesso!");
             model.addAttribute("adminDto", adminDto);
+        } catch (AdminNotFoundException e) {
+            logger.error("Admin not found: {}", e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "profile";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Erro de Servidor ao atualizar perfil", e);
             model.addAttribute("error", "Erro de Servidor ao atualizar perfil");
         }
 
         return "redirect:/profile";
     }
 
+
+    private void setupModelForRegister(Model model, AdminDto adminDto) {
+        model.addAttribute("adminDto", adminDto);
+        model.addAttribute("title", "Registro");
+    }
 }
 
 

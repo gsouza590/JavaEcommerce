@@ -8,7 +8,7 @@ public interface AdminService {
 
     Admin findByUsername(String username);
 
-    AdminDto getCustomer(String name);
+    AdminDto getAdmin(String name);
 
     Admin  update(AdminDto adminDto);
 }
