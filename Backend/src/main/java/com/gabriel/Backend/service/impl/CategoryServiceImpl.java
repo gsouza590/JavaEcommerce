@@ -1,6 +1,7 @@
 package com.gabriel.Backend.service.impl;
 
 import com.gabriel.Backend.dto.CategoryDto;
+import com.gabriel.Backend.exceptions.CategoryNotFoundException;
 import com.gabriel.Backend.model.Category;
 import com.gabriel.Backend.repository.CategoryRepository;
 import com.gabriel.Backend.service.CategoryService;
@@ -33,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findById(Long id) {
         Optional<Category> category = repository.findById(id);
-        return category.orElse(null);
+        return category.orElseThrow(()-> new CategoryNotFoundException("Category not found with id: " + id));
     }
 
 

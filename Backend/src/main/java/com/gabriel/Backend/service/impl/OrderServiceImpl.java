@@ -8,6 +8,7 @@ import com.gabriel.Backend.repository.OrderRepository;
 import com.gabriel.Backend.service.OrderService;
 import com.gabriel.Backend.service.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     private static final String DEFAULT_PAYMENT_METHOD = "Dinheiro";
     private static final String DEFAULT_ORDER_STATUS = "Pendente";
@@ -28,13 +30,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order save(ShoppingCart shoppingCart) {
-        Order order = createOrderFromCart(shoppingCart);
-        saveOrderDetails(shoppingCart, order);
-        cartService.deleteCartById(shoppingCart.getId());
-        return orderRepository.save(order);
-    }
-
-    private Order createOrderFromCart(ShoppingCart shoppingCart) {
         Order order = new Order();
         order.setOrderDate(new Date());
         order.setCustomer(shoppingCart.getCustomer());
@@ -43,10 +38,6 @@ public class OrderServiceImpl implements OrderService {
         order.setPaymentMethod(DEFAULT_PAYMENT_METHOD);
         order.setOrderStatus(DEFAULT_ORDER_STATUS);
         order.setQuantity(shoppingCart.getTotalItems());
-        return order;
-    }
-
-    private void saveOrderDetails(ShoppingCart shoppingCart, Order order) {
         List<OrderDetail> orderDetailList = new ArrayList<>();
         for (CartItem item : shoppingCart.getCartItems()) {
             OrderDetail orderDetail = new OrderDetail();
@@ -56,27 +47,28 @@ public class OrderServiceImpl implements OrderService {
             orderDetailList.add(orderDetail);
         }
         order.setOrderDetailList(orderDetailList);
+        cartService.deleteCartById(shoppingCart.getId());
+        return orderRepository.save(order);
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<Order> findAll(String username) {
+        log.info("Buscando todos os pedidos para o usuário: {}", username);
         Customer customer = customerRepository.findByUsername(username);
-        if (customer != null) {
-            return customer.getOrders();
-        }
-        return Collections.emptyList();
+        return customer != null ? customer.getOrders() : Collections.emptyList();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Order> findAllOrders() {
+        log.info("Buscando todos os pedidos");
         return orderRepository.findAll();
     }
 
     @Override
     @Transactional
     public Order acceptOrder(Long id) {
+        log.info("Aceitando pedido ID: {}", id);
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Order with ID " + id + " not found."));
         order.setAccept(true);
@@ -93,6 +85,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void cancelOrder(Long id) {
+        log.info("Cancelando pedido ID: {}", id);
         if (!orderRepository.existsById(id)) {
             throw new OrderNotFoundException("Order with ID " + id + " not found.");
         }

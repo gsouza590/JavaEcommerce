@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <!-- Basic -->
 
 <head th:replace="~{fragments::head}">
@@ -7,63 +7,51 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 
 <body>
-<!-- Start Main Top -->
-<div th:replace="~{fragments::main-top}">
-</div>
-<!-- End Main Top -->
+<!-- Main Top -->
+<div th:replace="~{fragments::main-top}"></div>
 
+<!-- Main Header -->
+<header th:replace="~{fragments::main-header}"></header>
 
-<!-- Start Main Top -->
-<header th:replace="~{fragments::main-header}">
-</header>
-<!-- End Main Top -->
+<!-- Top Search -->
+<div th:replace="~{fragments::top-search}"></div>
 
-<!-- Start Top Search -->
-<div th:replace="~{fragments::top-search}">
-</div>
-<!-- End Top Search -->
-
-
-<!-- Start Cart  -->
+<!-- Cart -->
 <div class="cart-box-main">
     <div class="container">
         <div class="row">
+            <!-- Checkout Address -->
             <div class="col-sm-6 col-lg-6 mb-3">
                 <div class="checkout-address">
                     <div class="title-left">
                         <h3>Endereço de Cobrança</h3>
                     </div>
                     <form class="needs-validation" novalidate th:object="${customer}">
-
                         <div class="mb-3">
                             <label for="username">Email *</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" th:field="*{username}" id="username"
-                                       placeholder="" readonly>
+                                <input type="text" class="form-control" th:field="*{username}" id="username" readonly>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="phone">Telefone *</label>
-                            <input type="text" class="form-control" th:field="*{phoneNumber}" id="phone" placeholder=""
-                                   readonly>
+                            <input type="text" class="form-control" th:field="*{phoneNumber}" id="phone" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="address">Endereço *</label>
-                            <input type="text" class="form-control"
-                                   th:value="${customer.address + ', ' + customer.city.name}"
-                                   id="address" placeholder="" readonly>
+                            <input type="text" class="form-control" th:value="${customer.address + ', ' + customer.city.name}" id="address" readonly>
                         </div>
-                        <a th:href="@{/profile}" class="btn btn-primary"> Mudar Informações</a>
+                        <a th:href="@{/profile}" class="btn btn-primary">Mudar Informações</a>
                         <hr class="mb-4">
-                        <div class="title"><span>Método de Pagamento</span></div>
+                        <div class="title">
+                            <span>Método de Pagamento</span>
+                        </div>
                         <div class="d-block my-3">
                             <div class="custom-control custom-radio">
-                                <input id="debit" name="paymentMethod" type="radio" checked class="custom-control-input"
-                                       required>
+                                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
                                 <label class="custom-control-label" for="debit">Dinheiro</label>
                             </div>
                         </div>
@@ -71,6 +59,7 @@
                     </form>
                 </div>
             </div>
+            <!-- Order Summary -->
             <div class="col-sm-6 col-lg-6 mb-3">
                 <form th:action="@{/add-order}" method="post" th:object="${shoppingCart}">
                     <input type="hidden" name="id" th:value="${id}">
@@ -81,12 +70,14 @@
                             </div>
                             <div class="rounded p-2 bg-light">
                                 <div class="media mb-2 border-bottom" th:each="item : ${shoppingCart.getCartItems()}">
-                                    <div class="media-body"><a href="product-detail.html"
-                                                               th:text="${item.product.name}"></a>
-                                        <div class="small text-muted">Preço: R$ [(${item.product.costPrice})] <span
-                                                class="mx-2">|</span> Quantidade: [(${item.quantity})]
-                                            <span class="mx-2">|</span> Subtotal: R$ [(${item.unitPrice *
-                                            item.quantity})]
+                                    <div class="media-body">
+                                        <a href="product-detail.html" th:text="${item.product.name}"></a>
+                                        <div class="small text-muted">
+                                            Preço: R$ <span th:text="${item.product.costPrice}"></span>
+                                            <span class="mx-2">|</span>
+                                            Quantidade: <span th:text="${item.quantity}"></span>
+                                            <span class="mx-2">|</span>
+                                            Subtotal: R$ <span th:text="${item.unitPrice * item.quantity}"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -105,8 +96,7 @@
                             <hr class="my-1">
                             <div class="d-flex">
                                 <h4>SubTotal</h4>
-                                <div class="ml-auto font-weight-bold"
-                                     th:text=" 'R$ ' + ${shoppingCart.totalPrice}"></div>
+                                <div class="ml-auto font-weight-bold" th:text="'R$ ' + ${shoppingCart.totalPrice}"></div>
                             </div>
                             <hr class="my-1">
                             <div class="d-flex">
@@ -131,14 +121,9 @@
 </div>
 <!-- End Cart -->
 
-
-
-
-<!-- Start Footer  -->
-<footer th:replace="~{fragments::footer}">
-</footer>
+<!-- Footer -->
+<footer th:replace="~{fragments::footer}"></footer>
 
 <div th:replace="~{fragments::script}"></div>
 </body>
-
 </html>

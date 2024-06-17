@@ -10,24 +10,16 @@
 </head>
 
 <body>
-<!-- Start Main Top -->
-<div th:replace="~{fragments::main-top}">
-</div>
-<!-- End Main Top -->
+<!-- Main Top -->
+<div th:replace="~{fragments::main-top}"></div>
 
+<!-- Main Header -->
+<header th:replace="~{fragments::main-header}"></header>
 
-<!-- Start Main Top -->
-<header th:replace="~{fragments::main-header}">
-</header>
-<!-- End Main Top -->
+<!-- Top Search -->
+<div th:replace="~{fragments::top-search}"></div>
 
-<!-- Start Top Search -->
-<div th:replace="~{fragments::top-search}">
-</div>
-<!-- End Top Search -->
-
-
-<!-- Start Contact Us  -->
+<!-- Contact Us -->
 <div class="contact-box-main">
     <div class="container">
         <div class="row">
@@ -37,11 +29,10 @@
                     <p>Enviem-nos uma mensagem ou ligue para nós se quiser comentar sobre produtos ou sugestões.</p>
                     <ul>
                         <li>
-                            <p><i class="fas fa-map-marker-alt"></i>Endereço: Rua dos Limoeiros, 33, São Paulo/SP
-                            </p>
+                            <p><i class="fas fa-map-marker-alt"></i>Endereço: Rua dos Limoeiros, 33, São Paulo/SP</p>
                         </li>
                         <li>
-                            <p><i class="fas fa-phone-square"></i>WhatsApp: (11)99999-9999)</p>
+                            <p><i class="fas fa-phone-square"></i>WhatsApp: (11)99999-9999</p>
                         </li>
                         <li>
                             <p><i class="fas fa-envelope"></i>Email: gsouza59@gmail.com</p>
@@ -58,11 +49,12 @@
         </div>
     </div>
 </div>
-<!-- End Cart -->
+<!-- End Contact Us -->
 
-<!-- Start Footer  -->
-<footer th:replace="~{fragments::footer}">
-</footer>
+<!-- Footer -->
+<footer th:replace="~{fragments::footer}"></footer>
+
+<!-- Scripts -->
 <div th:replace="~{fragments::script}"></div>
 </body>
 
