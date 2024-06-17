@@ -26,82 +26,18 @@
             <div class="container-fluid">
                 <div class="input-group" style="width: 30%; margin-bottom: 20px;">
                     <form th:action="@{/search-products/0}" method="get">
-<<<<<<< HEAD
-                        <input type="text" class="form-control rounded" placeholder="Buscar" name="keyword"
-                               aria-label="Search" aria-describedby="search-addon"/>
-                        <button type="submit" class="btn btn-outline-primary">Buscar</button>
-                    </form>
-                </div>
-                <a th:href="@{/add-product}" class="btn btn-primary">Adicionar Produto</a>
-                <p th:if="${size == 0}">Não há Produtos</p>
-=======
                         <input type="text" class="form-control rounded" placeholder="Buscar" name="keyword" aria-label="Buscar" aria-describedby="search-addon"/>
                         <button type="submit" class="btn btn-outline-primary">Buscar</button>
                     </form>
                 </div>
                 <a th:href="@{/add-product}" class="btn btn-primary mb-4">Adicionar Produto</a>
                 <p th:if="${size == 0}" class="text-center">Não há Produtos</p>
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                 <div th:if="${success}" class="text-center alert alert-success">
                     <p th:text="${success}"></p>
                 </div>
                 <div th:if="${error}" class="text-center alert alert-danger">
                     <p th:text="${error}"></p>
                 </div>
-<<<<<<< HEAD
-                <table class="table table-bordered" th:if="${size > 0}">
-                    <thead>
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Categoria</th>
-                        <th scope="col">Preço</th>
-                        <th scope="col">Quantidade</th>
-                        <th scope="col">Imagem</th>
-                        <th scope="col">Atualizar</th>
-                        <th scope="col">Ação</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="product : ${products}">
-                        <th scope="row" th:text="${product.name}"></th>
-                        <td th:text="${product.category.name}"></td>
-                        <td th:text="${product.costPrice}"></td>
-                        <td th:text="${product.currentQuantity}"></td>
-                        <td>
-                            <img class="my-product-image" style="height: 40px; width: 40px;" alt=""
-                                 th:src="'data:image/jpeg;base64,' + ${product.image}">
-                        </td>
-                        <td>
-                            <a th:href="@{/update-product/{id}(id=${product.id})}" class="btn btn-primary">Atualizar</a>
-                        </td>
-                        <td>
-                            <a th:if="${product.is_deleted}" th:href="@{/enable-product(id=${product.id})}" class="btn btn-primary">Ativar</a>
-                            <a th:if="${!product.is_deleted}" th:href="@{/delete-product(id=${product.id})}" class="btn btn-danger">Deletar</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- Pagination -->
-                <nav aria-label="...">
-                    <ul class="pagination">
-                        <li th:if="${currentPage != null && currentPage != 0}" class="page-item">
-                            <a th:href="@{'/products/' + ${currentPage - 1} + '/'}" class="page-link">Anterior</a>
-                        </li>
-                        <li th:each="pageNumber : ${pageNumbers}"
-                            th:classappend="${currentPage != null && currentPage == pageNumber - 1 ? 'active' : ''}"
-                            class="page-item">
-                            <a th:href="@{'/products/' + ${pageNumber - 1} + '/'}" class="page-link">
-                                <span th:text="${pageNumber}"></span>
-                            </a>
-                        </li>
-                        <li th:if="${currentPage != null && currentPage + 1 != totalPages}" class="page-item">
-                            <a th:href="@{'/products/' + ${currentPage + 1} + '/'}" class="page-link">Próximo</a>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- Pagination -->
-=======
                 <div class="table-responsive">
                     <table class="table table-bordered" th:if="${size > 0}">
                         <thead>
@@ -153,7 +89,6 @@
                     </ul>
                 </nav>
                 <!-- End of Pagination -->
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
             </div>
             <!-- /.container-fluid -->
 
@@ -175,7 +110,6 @@
 
 <!-- Bootstrap core JavaScript-->
 <div th:replace="~{fragments::script}"></div>
-
 </body>
 
 </html>

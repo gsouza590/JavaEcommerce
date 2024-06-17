@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 
-<<<<<<< HEAD
-<head th:replace="~{fragments :: header}"></head>
-=======
 <head th:replace="~{fragments :: header}">
 </head>
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 
 <body id="page-top">
 
@@ -31,43 +27,6 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-<<<<<<< HEAD
-                <div th:if="${size == 0}">
-                    <p>Categoria Vazia</p>
-                </div>
-                <button style="margin-bottom: 20px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Adicionar nova Categoria</button>
-
-                <div th:if="${success}" class="text-center alert alert-success">
-                    <p th:text="${success}"></p>
-                </div>
-                <div th:if="${failed}" class="text-center alert alert-danger">
-                    <p th:text="${failed}"></p>
-                </div>
-
-                <table class="table table-bordered" th:if="${size > 0}">
-                    <thead>
-                    <tr>
-                        <th scope="col">Indice</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Editar</th>
-                        <th scope="col">Ação</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="category : ${categories}">
-                        <th scope="row" th:text="${category.id}"></th>
-                        <td th:text="${category.name}"></td>
-                        <td>
-                            <a id="editButton" th:href="@{/findById(id=${category.id})}" class="btn btn-primary">Atualizar</a>
-                        </td>
-                        <td>
-                            <a th:if="${category.is_deleted}" th:href="@{/enable-category(id=${category.id})}" class="btn btn-primary">Ativar</a>
-                            <a th:if="${!category.is_deleted}" th:href="@{/delete-category(id=${category.id})}" class="btn btn-danger">Deletar</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-=======
                 <main>
                     <section th:if="${size == 0}">
                         <p>Categoria Vazia</p>
@@ -100,17 +59,15 @@
                                    class="btn btn-primary">Atualizar</a>
                             </td>
                             <td>
-                                <a th:if="${category.is_deleted} == true" th:href="@{/enable-category(id = ${category.id})}"
+                                <a th:if="${category.is_deleted}" th:href="@{/enable-category(id=${category.id})}"
                                    class="btn btn-primary">Ativar</a>
-                                <a th:if="${category.is_deleted} == false"
-                                   th:href="@{/delete-category(id = ${category.id})}"
+                                <a th:if="${!category.is_deleted}" th:href="@{/delete-category(id=${category.id})}"
                                    class="btn btn-danger">Deletar</a>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </main>
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
             </div>
             <!-- /.container-fluid -->
 
@@ -130,14 +87,8 @@
 <!-- Scroll to Top Button-->
 <a th:replace="~{fragments :: scroll}"></a>
 
-<<<<<<< HEAD
 <!-- Add Category Modal-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-=======
-<!-- Modals -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
     <form th:action="@{/add-category}" method="post" th:object="${categoryNew}">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -161,16 +112,10 @@
         </div>
     </form>
 </div>
-<<<<<<< HEAD
 <!-- End of Add Category Modal -->
 
 <!-- Edit Category Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalExample" aria-hidden="true">
-=======
-
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalExample"
-     aria-hidden="true">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
     <form th:action="@{/update-category}" method="put">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -198,10 +143,7 @@
         </div>
     </form>
 </div>
-<<<<<<< HEAD
 <!-- End of Edit Category Modal -->
-=======
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 
 <!-- Bootstrap core JavaScript-->
 <div th:replace="~{fragments :: script}"></div>

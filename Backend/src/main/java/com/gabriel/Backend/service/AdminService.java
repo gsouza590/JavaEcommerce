@@ -9,14 +9,8 @@ public interface AdminService {
 
     Admin findByUsername(String username);
 
-<<<<<<< HEAD
-    AdminDto getAdmin(String username);
-=======
     AdminDto getAdmin(String name);
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 
     Admin  update(AdminDto adminDto);
 
-
-    boolean existsByUsername(String username);
 }

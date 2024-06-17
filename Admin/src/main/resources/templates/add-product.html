@@ -29,90 +29,55 @@
                         <!-- Form Name -->
                         <legend>Adicionar Produto</legend>
 
-                        <!-- Text input-->
+                        <!-- Nome do Produto -->
                         <div class="form-group row">
                             <label for="product_name" class="col-md-2 col-form-label">Nome do Produto</label>
                             <div class="col-md-4">
-<<<<<<< HEAD
-                                <input id="product_name" th:field="*{name}" class="form-control input-md" required type="text">
-=======
                                 <input id="product_name" th:field="*{name}" name="product_name"
                                        class="form-control" required="" type="text" placeholder="Digite o nome do produto" aria-required="true">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                             </div>
                         </div>
 
-                        <!-- Select Basic -->
+                        <!-- Categoria -->
                         <div class="form-group row">
                             <label for="product_categories" class="col-md-2 col-form-label">Categoria</label>
                             <div class="col-md-4">
-<<<<<<< HEAD
-                                <select id="product_categories" th:field="*{category}" class="form-control">
-=======
                                 <select id="product_categories" th:field="*{category}" name="product_categories"
                                         class="form-control" aria-required="true">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                     <option th:value="null">-Selecione-</option>
                                     <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- Text input-->
+                        <!-- Descrição -->
                         <div class="form-group row">
                             <label for="description" class="col-md-2 col-form-label">Descrição</label>
                             <div class="col-md-4">
-<<<<<<< HEAD
-                                <input id="description" th:field="*{description}" class="form-control input-md" required type="text">
-=======
                                 <input id="description" th:field="*{description}" name="description"
                                        class="form-control" required="" type="text" placeholder="Digite a descrição" aria-required="true">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                             </div>
                         </div>
 
-                        <!-- Text input-->
-<<<<<<< HEAD
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="available_quantity">Quantidade Disponível</label>
-                            <div class="col-md-4">
-                                <input id="available_quantity" th:field="*{currentQuantity}" class="form-control input-md" required type="text">
-=======
+                        <!-- Quantidade Disponível -->
                         <div class="form-group row">
                             <label for="available_quantity" class="col-md-2 col-form-label">Quantidade Disponível</label>
                             <div class="col-md-4">
                                 <input id="available_quantity" th:field="*{currentQuantity}" name="available_quantity"
                                        class="form-control" required="" type="number" placeholder="Digite a quantidade disponível" aria-required="true">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                             </div>
                         </div>
 
-                        <!-- Text input-->
+                        <!-- Preço -->
                         <div class="form-group row">
                             <label for="price" class="col-md-2 col-form-label">Preço</label>
                             <div class="col-md-4">
-<<<<<<< HEAD
-                                <input id="price" th:field="*{costPrice}" class="form-control input-md" required type="text">
-=======
                                 <input id="price" name="price" th:field="*{costPrice}" class="form-control"
                                        required="" type="number" step="0.01" placeholder="Digite o preço" aria-required="true">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                             </div>
                         </div>
 
-                        <!-- File input-->
-<<<<<<< HEAD
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="image">Imagem</label>
-                            <div class="col-md-4">
-                                <input id="image" th:field="*{image}" class="input-file" type="file">
-                            </div>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="form-group">
-                            <div class="col-md-4 col-md-offset-4">
-=======
+                        <!-- Imagem -->
                         <div class="form-group row">
                             <label for="image" class="col-md-2 col-form-label">Imagem</label>
                             <div class="col-md-10">
@@ -120,9 +85,9 @@
                             </div>
                         </div>
 
+                        <!-- Botão de envio -->
                         <div class="form-group row">
                             <div class="col-md-10 offset-md-2">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                 <button type="submit" class="btn btn-primary">Salvar</button>
                             </div>
                         </div>
@@ -148,8 +113,4 @@
 <div th:replace="~{fragments::script}"></div>
 
 </body>
-<<<<<<< HEAD
-=======
-
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 </html>

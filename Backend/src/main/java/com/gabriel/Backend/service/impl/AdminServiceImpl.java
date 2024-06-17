@@ -5,8 +5,6 @@ import com.gabriel.Backend.model.Admin;
 import com.gabriel.Backend.repository.AdminRepository;
 import com.gabriel.Backend.repository.RoleRepository;
 import com.gabriel.Backend.service.AdminService;
-import com.gabriel.Backend.service.exceptions.Admin.AdminAlreadyExistsException;
-import com.gabriel.Backend.service.exceptions.Admin.AdminNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,79 +19,37 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin save(AdminDto adminDto) {
-<<<<<<< HEAD
-        Admin admin = new Admin();
-        admin.setFirstName(adminDto.getFirstName());
-        admin.setLastName(adminDto.getLastName());
-        admin.setUsername(adminDto.getUsername());
-        admin.setPassword(adminDto.getPassword());
-=======
-        if (adminRepository.findByUsername(adminDto.getUsername()) != null) {
-            throw new AdminAlreadyExistsException("Admin with username " + adminDto.getUsername() + " already exists");
-        }
         Admin admin = convertToEntity(adminDto);
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
         admin.setRoles(Arrays.asList(roleRepository.findByName("ADMIN")));
         return adminRepository.save(admin);
     }
 
     @Override
     public Admin findByUsername(String username) {
-        Admin admin = adminRepository.findByUsername(username);
-
-        if (admin == null) {
-            throw new AdminNotFoundException("Admin with username " + username + " not found");
-        }
-
         return adminRepository.findByUsername(username);
     }
 
     @Override
     @Transactional
-<<<<<<< HEAD
-    public AdminDto getAdmin(String username) {
-        Admin admin = adminRepository.findByUsername(username);
-        if (admin == null) {
-            return null;
-        }
-        AdminDto adminDto = new AdminDto();
-        adminDto.setFirstName(admin.getFirstName());
-        adminDto.setLastName(admin.getLastName());
-        adminDto.setUsername(admin.getUsername());
-        adminDto.setPassword(admin.getPassword());
-        return adminDto;
-=======
     public AdminDto getAdmin(String name) {
         Admin admin = adminRepository.findByUsername(name);
-        if (admin == null) {
-            throw new AdminNotFoundException("Admin with username " + name + " not found");
-        }
         return convertToDto(admin);
-
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
     }
 
     @Override
     @Transactional
     public Admin update(AdminDto adminDto) {
         Admin admin = adminRepository.findByUsername(adminDto.getUsername());
-        if (admin == null) {
-<<<<<<< HEAD
-            return null;
+        if (admin != null) {
+            admin.setFirstName(adminDto.getFirstName());
+            admin.setLastName(adminDto.getLastName());
+            admin.setPassword(adminDto.getPassword());
+            // Atualize outros campos conforme necessário
+            return adminRepository.save(admin);
         }
-        admin.setFirstName(adminDto.getFirstName());
-        admin.setLastName(adminDto.getLastName());
-        admin.setPassword(adminDto.getPassword());
-        return adminRepository.save(admin);
-=======
-            throw new AdminNotFoundException("Admin with username " + adminDto.getUsername() + " not found");
-        }
-
-        admin.setFirstName(adminDto.getFirstName());
-        admin.setLastName(adminDto.getLastName());
-        return adminRepository.save(admin);
-
+        return null;
     }
+
 
     private Admin convertToEntity(AdminDto adminDto) {
         Admin admin = new Admin();
@@ -111,12 +67,5 @@ public class AdminServiceImpl implements AdminService {
         adminDto.setUsername(admin.getUsername());
         adminDto.setPassword(admin.getPassword());
         return adminDto;
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
     }
-
-    public boolean existsByUsername(String username) {
-        return adminRepository.existsByUsername(username);
-    }
-
-
 }

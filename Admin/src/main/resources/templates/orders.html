@@ -22,23 +22,6 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-<<<<<<< HEAD
-                <!-- Success Message -->
-                <div th:if="${success}" class="text-center alert alert-success">
-                    <p th:text="${success}"></p>
-                </div>
-
-                <!-- Orders Table -->
-                <div class="table-main table-responsive">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th class="order-date">Data do Pedido</th>
-                            <th>Data da Entrega</th>
-                            <th class="price-pr">Status do Pedido</th>
-                            <th class="quantity-box">Quantidade de Produtos</th>
-                            <th class="total-pr">Total do Pedido</th>
-=======
 
                 <!-- Success Message -->
                 <div th:if="${success}" class="text-center alert alert-success">
@@ -55,31 +38,12 @@
                             <th>Status do Pedido</th>
                             <th>Quantidade de Produtos</th>
                             <th>Total do Pedido</th>
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                             <th>Método de Pagamento</th>
                             <th>Ação</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="order : ${orders}">
-<<<<<<< HEAD
-                            <td class="order-date">
-                                <span><b th:text="${order.orderDate}"></b></span>
-                            </td>
-                            <td class="name-pr" th:if="${order.accept}">
-                                <a href="#">
-                                    <span th:text="${order.deliveryDate}"></span>
-                                </a>
-                            </td>
-                            <td class="price-pr">
-                                <p th:text="${order.orderStatus}"></p>
-                            </td>
-                            <td class="quantity-box" th:text="${order.quantity}"></td>
-                            <td class="total-pr">
-                                <p style="color: red" th:text="'R$ ' + ${order.totalPrice}"></p>
-                            </td>
-                            <td class="total-pr" style="color: black">
-=======
                             <td>
                                 <span><b th:text="${order.orderDate}"></b></span>
                             </td>
@@ -97,7 +61,6 @@
                                 <p style="color: red" th:text="'R$ ' + ${order.totalPrice}"></p>
                             </td>
                             <td style="color: black">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                 <span th:text="${order.paymentMethod}"></span>
                             </td>
                             <td>
@@ -108,22 +71,6 @@
                         </tbody>
                     </table>
                 </div>
-<<<<<<< HEAD
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer th:replace="~{fragments::footer}"></footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-=======
                 <!-- End of Order Table -->
 
             </div>
@@ -141,21 +88,12 @@
 
 </div>
 <!-- End of Page Wrapper -->
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 
-    <!-- Scroll to Top Button-->
-    <a th:replace="~{fragments::scroll}"></a>
+<!-- Scroll to Top Button-->
+<a th:replace="~{fragments::scroll}"></a>
 
-<<<<<<< HEAD
-    <!-- Bootstrap core JavaScript-->
-    <div th:replace="~{fragments::script}"></div>
-    <script th:src="@{/js/categories.js}"></script>
-</body>
-
-=======
 <!-- Bootstrap core JavaScript-->
 <div th:replace="~{fragments::script}"></div>
 <script th:src="@{/js/categories.js}"></script>
 </body>
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 </html>
