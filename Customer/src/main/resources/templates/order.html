@@ -13,9 +13,15 @@
 <div th:replace="~{fragments::main-top}"></div>
 <!-- End Main Top -->
 
+<<<<<<< HEAD
 <!-- Start Main Header -->
 <header th:replace="~{fragments::main-header}"></header>
 <!-- End Main Header -->
+=======
+<!-- Start Main Top -->
+<header th:replace="~{fragments::main-header}"></header>
+<!-- End Main Top -->
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 
 <!-- Start Top Search -->
 <div th:replace="~{fragments::top-search}"></div>
@@ -26,7 +32,11 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+<<<<<<< HEAD
                 <div th:if="${success}" class="text-center alert alert-success">
+=======
+                <div th:if="${success}" class="alert alert-success text-center">
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                     <p th:text="${success}"></p>
                 </div>
                 <div class="table-main table-responsive">
@@ -56,13 +66,17 @@
                             </td>
                             <td class="quantity-box" th:text="${order.quantity}"></td>
                             <td class="total-pr">
+<<<<<<< HEAD
                                 <p style="color: red" th:text="'R$ ' + ${order.totalPrice}"></p>
+=======
+                                <p style="color: red" th:text="'$ ' + ${order.totalPrice}"></p>
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                             </td>
                             <td class="total-pr" style="color: black">
                                 <span th:text="${order.paymentMethod}"></span>
                             </td>
                             <td>
-                                <a th:href="@{'/cancel-order/' + ${order.id}}" class="button-cancel">Cancelar</a>
+                                <a th:href="@{'/cancel-order/' + ${order.id}}" class="btn btn-danger">Cancelar</a>
                             </td>
                         </tr>
                         </tbody>

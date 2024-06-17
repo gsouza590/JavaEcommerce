@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 
-<head th:replace="fragments :: header">
-</head>
+<head th:replace="~{fragments :: header}"></head>
 
 <body class="bg-gradient-primary">
 <div class="container">
@@ -32,32 +31,52 @@
                         <form th:action="@{/register-new}" th:object="${adminDto}" method="POST">
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <label for="exampleFirstName" class="form-label">Primeiro Nome</label>
                                     <input type="text" class="form-control form-control-user" th:field="*{firstName}"
                                            id="exampleFirstName" placeholder="Primeiro Nome">
+<<<<<<< HEAD
                                     <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"
+=======
+                                    <div class="alert alert-danger mt-2" th:if="${#fields.hasErrors('firstName')}"
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                          th:errors="*{firstName}"></div>
                                 </div>
                                 <div class="col-sm-6">
+                                    <label for="exampleLastName" class="form-label">Sobrenome</label>
                                     <input type="text" th:field="*{lastName}" class="form-control form-control-user"
                                            id="exampleLastName" placeholder="Sobrenome">
+<<<<<<< HEAD
                                     <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}"
+=======
+                                    <div class="alert alert-danger mt-2" th:if="${#fields.hasErrors('lastName')}"
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                          th:errors="*{lastName}"></div>
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="exampleInputEmail" class="form-label">Email</label>
                                 <input type="email" th:field="*{username}" class="form-control form-control-user"
                                        id="exampleInputEmail" placeholder="Email">
+<<<<<<< HEAD
                                 <div class="alert alert-danger" th:if="${#fields.hasErrors('username')}"
                                      th:errors="*{username}"></div>
+=======
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <label for="exampleInputPassword" class="form-label">Senha</label>
                                     <input type="password" th:field="*{password}" class="form-control form-control-user"
                                            id="exampleInputPassword" placeholder="Senha">
+<<<<<<< HEAD
                                     <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}"
+=======
+                                    <div class="alert alert-danger mt-2" th:if="${#fields.hasErrors('password')}"
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                          th:errors="*{password}"></div>
                                 </div>
                                 <div class="col-sm-6">
+                                    <label for="exampleRepeatPassword" class="form-label">Repita a Senha</label>
                                     <input type="password" th:field="*{repeatPassword}"
                                            class="form-control form-control-user"
                                            id="exampleRepeatPassword" placeholder="Repita a Senha">
@@ -83,6 +102,10 @@
         </div>
     </div>
 </div>
-<div th:replace="fragments::script"></div>
+<div th:replace="~{fragments::script}"></div>
 </body>
+<<<<<<< HEAD
+=======
+
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 </html>

@@ -13,11 +13,20 @@
 <div th:replace="~{fragments::main-top}"></div>
 <!-- End Main Top -->
 
+<<<<<<< HEAD
 <!-- Start Main Header -->
 <header class="main-top">
 	<div th:replace="~{fragments::main-header}"></div>
 </header>
 <!-- End Main Header -->
+=======
+<!-- Start Main Top -->
+<header class="main-top">
+	<div th:replace="~{fragments::main-header}"></div>
+	<!-- Start Navigation -->
+</header>
+<!-- End Main Top -->
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 
 <!-- Start Top Search -->
 <div th:replace="~{fragments::top-search}"></div>
@@ -48,6 +57,7 @@
 			</div>
 		</div>
 		<div class="row special-list">
+<<<<<<< HEAD
 			<div class="col-lg-3 col-md-6 special-grid" th:each="product : ${products}" th:if="${category.name == product.category.name}">
 				<form th:action="@{/add-to-cart}" method="post">
 					<div class="products-single fix">
@@ -56,6 +66,21 @@
 							<div class="mask-icon">
 								<ul>
 									<li><a th:href="@{/product-detail/{id}(id=${product.id})}" data-toggle="tooltip" data-placement="right" title="Detalhes"><i class="fas fa-eye"></i></a></li>
+=======
+			<div class="col-lg-3 col-md-6 special-grid" th:each="product : ${products}"
+				 th:if="${category.name == product.category.name}">
+				<form th:action="@{/add-to-cart}" method="post">
+					<div class="products-single fix">
+						<div class="box-img-hover">
+							<img th:src="'data:image/jpeg;base64,' + ${product.image}" class="img-fluid" alt="Imagem do Produto">
+							<div class="mask-icon">
+								<ul>
+									<li>
+										<a th:href="@{/product-detail/{id}(id=${product.id})}" data-toggle="tooltip" data-placement="right" title="Detalhes">
+											<i class="fas fa-eye"></i>
+										</a>
+									</li>
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 								</ul>
 								<input type="hidden" th:value="${product.id}" name="id" class="form-control">
 								<input type="submit" class="btn hvr-hover" value="Adicionar no Carrinho">
@@ -74,8 +99,16 @@
 
 <!-- Start Footer -->
 <footer th:replace="~{fragments::footer}"></footer>
+<<<<<<< HEAD
+=======
+<!-- End Footer -->
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 
 <!-- ALL JS FILES -->
 <div th:replace="~{fragments::script}"></div>
 </body>
+<<<<<<< HEAD
+=======
+
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 
-<head th:replace="fragments :: header">
+<head th:replace="~{fragments :: header}">
 </head>
 
 <body class="bg-gradient-primary">
@@ -24,21 +24,27 @@
                                     <h1 class="h4 text-gray-900 mb-4">Bem Vindo!</h1>
                                 </div>
                                 <div th:if="${param.error}" class="alert alert-danger text-center">
-                                    Inválido usuário ou senha
+                                    Usuário ou senha inválidos
                                 </div>
                                 <div th:if="${param.logout}" class="alert alert-success text-center">
                                     Você foi deslogado!
                                 </div>
                                 <form class="user" th:action="@{/do-login}" method="post">
                                     <div class="form-group">
+                                        <label for="username">Email</label>
                                         <input type="email" name="username" class="form-control form-control-user"
                                                id="username" aria-describedby="emailHelp"
-                                               placeholder="Entre com o Email...">
+                                               placeholder="Entre com o Email..." required>
                                     </div>
                                     <div class="form-group">
+                                        <label for="password">Senha</label>
                                         <input type="password" name="password" id="password"
                                                class="form-control form-control-user"
+<<<<<<< HEAD
                                                placeholder="Senha">
+=======
+                                               placeholder="Senha" required>
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                     </div>
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
                                         Login
@@ -50,7 +56,11 @@
                                     <a class="small" th:href="@{/forgot-password}">Esqueceu a senha?</a>
                                 </div>
                                 <div class="text-center">
+<<<<<<< HEAD
                                     <a class="small" th:href="@{/register}">Crie uma nova Conta!</a>
+=======
+                                    <a class="small" th:href="@{/register}">Crie uma nova conta!</a>
+>>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                 </div>
                             </div>
                         </div>
@@ -63,7 +73,7 @@
     </div>
 
 </div>
-<div th:replace="fragments::script"></div>
+<div th:replace="~{fragments::script}"></div>
 </body>
 
 </html>
