@@ -24,27 +24,16 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-<<<<<<< HEAD
-                <form class="form-horizontal" th:action="@{/update-product/{id}(id = ${productDto.id})}" method="post"
-=======
                 <form class="form-horizontal" th:action="@{/update-product/{id}(id=${productDto.id})}" method="post"
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                       th:object="${productDto}" enctype="multipart/form-data">
                     <fieldset>
                         <!-- Form Name -->
                         <legend>Atualizar Produto</legend>
 
-<<<<<<< HEAD
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="product_name">Nome Produto</label>
-                            <div class="col-md-4">
-=======
                         <!-- Nome do Produto -->
                         <div class="form-group row">
                             <label for="product_name" class="col-md-4 col-form-label">Nome Produto</label>
                             <div class="col-md-8">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                 <input id="product_name" th:field="*{name}" name="product_name"
                                        class="form-control" required type="text">
                             </div>
@@ -74,17 +63,10 @@
                             </div>
                         </div>
 
-<<<<<<< HEAD
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="available_quantity">Quantidade Disponível</label>
-                            <div class="col-md-4">
-=======
                         <!-- Quantidade Disponível -->
                         <div class="form-group row">
                             <label for="available_quantity" class="col-md-4 col-form-label">Quantidade Disponível</label>
                             <div class="col-md-8">
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
                                 <input id="available_quantity" th:field="*{currentQuantity}" name="available_quantity"
                                        class="form-control" required type="number">
                             </div>
@@ -99,24 +81,6 @@
                             </div>
                         </div>
 
-<<<<<<< HEAD
-                        <!-- File input -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="image">Imagem</label>
-                            <div class="col-md-4">
-                                <img class="my-product-image" style="height: 40px; width: 40px;" alt=""
-                                     th:src="'data:image/jpeg;base64,' + ${productDto.image}">
-                                <input id="image" name="imageProduct" class="input-file" type="file">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Atualizar</button>
-                    </fieldset>
-                </form>
-            </div>
-            <!-- End of Page Content -->
-
-=======
                         <!-- Imagem do Produto -->
                         <div class="form-group row">
                             <label for="image" class="col-md-4 col-form-label">Imagem</label>
@@ -137,7 +101,6 @@
                 </form>
             </div>
             <!-- /.container-fluid -->
->>>>>>> a972b13e25d0fadc3c043290cc30af4ba9281dc4
         </div>
         <!-- End of Main Content -->
 
