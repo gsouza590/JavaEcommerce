@@ -38,18 +38,29 @@ public class OrderServiceImpl implements OrderService {
         order.setPaymentMethod(DEFAULT_PAYMENT_METHOD);
         order.setOrderStatus(DEFAULT_ORDER_STATUS);
         order.setQuantity(shoppingCart.getTotalItems());
-        List<OrderDetail> orderDetailList = new ArrayList<>();
-        for (CartItem item : shoppingCart.getCartItems()) {
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setOrder(order);
-            orderDetail.setProduct(item.getProduct());
-            detailRepository.save(orderDetail);
-            orderDetailList.add(orderDetail);
-        }
-        order.setOrderDetailList(orderDetailList);
+
+        order = orderRepository.save(order); // Ensure order is saved and has an ID
+
+
+        Map<Long, OrderDetail> detailMap = new HashMap<>();
+        Order finalOrder = order;
+        shoppingCart.getCartItems().forEach(item -> {
+            Product product = item.getProduct();
+            OrderDetail detail = detailMap.getOrDefault(product.getId(), new OrderDetail());
+            detail.setOrder(finalOrder);
+            detail.setProduct(product);
+            detail.setQuantity(item.getQuantity());
+            detailMap.put(product.getId(), detail);
+        });
+
+        detailRepository.saveAll(detailMap.values()); // Save or update details
+        order.setOrderDetailList(new ArrayList<>(detailMap.values()));
+
         cartService.deleteCartById(shoppingCart.getId());
-        return orderRepository.save(order);
+        return order;
     }
+
+
     @Override
     @Transactional(readOnly = true)
     public List<Order> findAll(String username) {
