@@ -1,6 +1,7 @@
 package com.gabriel.Backend.service.impl;
 
 import com.gabriel.Backend.dto.ProductDto;
+import com.gabriel.Backend.exceptions.ProductNotFoundException;
 import com.gabriel.Backend.model.Product;
 import com.gabriel.Backend.repository.ProductRepository;
 import com.gabriel.Backend.service.ProductService;
@@ -22,9 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
     private final ProductRepository productRepository;
-    @Autowired
     private final ImageUpload imageUpload;
     private final ModelMapper modelMapper;
 
@@ -69,24 +68,20 @@ public class ProductServiceImpl implements ProductService {
             modelMapper.map(productDto, product);
 
             if (imageProduct != null) {
-                if (!imageUpload.checkExisted(imageProduct)) {
-                    System.out.println("Upload realizado com sucesso");
-                }
                 product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
             }
-
             return productRepository.save(product);
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     @Override
     public void deleteById(Long id) {
-        Product product = productRepository.getReferenceById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product não encontrado: " + id));
         product.set_deleted(true);
         product.set_activated(false);
         productRepository.save(product);
@@ -94,7 +89,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void enableById(Long id) {
-        Product product = productRepository.getReferenceById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product não encontrado: " + id));
         product.set_activated(true);
         product.set_deleted(false);
         productRepository.save(product);
@@ -102,7 +98,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getById(Long id) {
-        Product product = productRepository.getReferenceById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product não encontrado: " + id));
         return modelMapper.map(product, ProductDto.class);
     }
 

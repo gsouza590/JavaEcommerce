@@ -2,6 +2,9 @@ package com.gabriel.Backend.dto;
 
 import com.gabriel.Backend.model.Category;
 import com.gabriel.Backend.model.Product;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,10 +19,18 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProductDto {
     private Long id;
+    @NotEmpty(message = "Nome é necessário")
     private String name;
+    @NotEmpty(message = "Descrição é necessário")
     private String description;
+    @NotNull(message = "Custo é necessário")
+    @Min(value = 0, message = "Custo deve ser maior ou igual a zero")
     private double costPrice;
+    @NotNull(message = "Preço de venda é necessário")
+    @Min(value = 0, message = "Preço de venda deve ser maior ou igual a zero")
     private double salePrice;
+    @NotNull(message = "Quantidade  disponivel é necessária")
+    @Min(value = 0, message = "Quantidade  disponivel deve ser maior ou igual a zero")
     private int currentQuantity;
     private Category category;
     private String image;

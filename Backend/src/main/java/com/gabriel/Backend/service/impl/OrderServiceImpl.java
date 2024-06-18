@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<Order> findAll(String username) {
-        log.info("Buscando todos os pedidos para o usuário: {}", username);
+
         Customer customer = customerRepository.findByUsername(username);
         return customer != null ? customer.getOrders() : Collections.emptyList();
     }
@@ -72,14 +72,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<Order> findAllOrders() {
-        log.info("Buscando todos os pedidos");
+   ;
         return orderRepository.findAll();
     }
 
     @Override
     @Transactional
     public Order acceptOrder(Long id) {
-        log.info("Aceitando pedido ID: {}", id);
+
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Order with ID " + id + " not found."));
         order.setAccept(true);
@@ -96,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void cancelOrder(Long id) {
-        log.info("Cancelando pedido ID: {}", id);
+
         if (!orderRepository.existsById(id)) {
             throw new OrderNotFoundException("Order with ID " + id + " not found.");
         }
