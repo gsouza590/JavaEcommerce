@@ -1,5 +1,7 @@
 package com.gabriel.Customer.config;
 
+import com.gabriel.Backend.repository.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +17,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class CustomerConfiguration {
 
-    @Bean
-    public CustomerServiceConfig userDetailsService() {
-        return new CustomerServiceConfig();
-    }
+    private final CustomerServiceConfig userDetailsService;
+    private final CustomerRepository customerRepository;
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -63,7 +65,7 @@ public class CustomerConfiguration {
                 http.getSharedObject(AuthenticationManagerBuilder.class);
 
         authenticationManagerBuilder
-                .userDetailsService(userDetailsService())
+                .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
 
         return authenticationManagerBuilder.build();

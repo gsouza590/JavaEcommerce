@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
@@ -43,8 +45,8 @@ public class LoginController {
         }
 
         String username = customerDto.getUsername();
-        Customer existingCustomer = customerService.findByUsername(username);
-        if (existingCustomer != null) {
+        Customer customer = customerService.findByUsername(username);
+        if (customer != null) {
             model.addAttribute("customerDto", customerDto);
             model.addAttribute("error", "Email já registrado!");
             return "register";

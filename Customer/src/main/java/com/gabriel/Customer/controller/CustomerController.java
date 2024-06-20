@@ -7,6 +7,7 @@ import com.gabriel.Backend.service.CityService;
 import com.gabriel.Backend.service.CountryService;
 import com.gabriel.Backend.service.CustomerService;
 import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,6 +78,7 @@ public class CustomerController {
         model.addAttribute("customer", customerUpdate);
         return "redirect:/profile";
     }
+
 
     @GetMapping("/change-password")
     public String changePassword(Model model, Principal principal) {
