@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,10 +26,10 @@ public class ProductDto {
     private String description;
     @NotNull(message = "Custo é necessário")
     @Min(value = 0, message = "Custo deve ser maior ou igual a zero")
-    private double costPrice;
+    private BigDecimal costPrice;
     @NotNull(message = "Preço de venda é necessário")
     @Min(value = 0, message = "Preço de venda deve ser maior ou igual a zero")
-    private double salePrice;
+    private BigDecimal salePrice;
     @NotNull(message = "Quantidade  disponivel é necessária")
     @Min(value = 0, message = "Quantidade  disponivel deve ser maior ou igual a zero")
     private int currentQuantity;
