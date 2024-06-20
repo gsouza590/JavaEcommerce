@@ -5,7 +5,6 @@ import com.gabriel.Backend.model.Customer;
 import com.gabriel.Backend.repository.CustomerRepository;
 import com.gabriel.Backend.repository.RoleRepository;
 import com.gabriel.Backend.service.CustomerService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,15 +37,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @Transactional
-    public Customer update(CustomerDto customerDto) {
-        Customer customer = customerRepository.findByUsername(customerDto.getUsername());
-        if (customer != null) {
-            modelMapper.map(customerDto, customer);
-            return customerRepository.save(customer);
-        }
-        return null;
+    public Customer update(CustomerDto dto) {
+        Customer customer = customerRepository.findByUsername(dto.getUsername());
+        customer.setAddress(dto.getAddress());
+        customer.setCity(dto.getCity());
+        customer.setCountry(dto.getCountry());
+        customer.setPhoneNumber(dto.getPhoneNumber());
+        return customerRepository.save(customer);
     }
+
 
 
     @Override
@@ -55,18 +54,6 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findByUsername(username);
         if (customer != null) {
             return modelMapper.map(customer, CustomerDto.class);
-            //        CustomerDto customerDto = new CustomerDto();
-//        Customer customer = customerRepository.findByUsername(username);
-//        customerDto.setFirstName(customer.getFirstName());
-//        customerDto.setLastName(customer.getLastName());
-//        customerDto.setUsername(customer.getUsername());
-//        customerDto.setPassword(customer.getPassword());
-//        customerDto.setAddress(customer.getAddress());
-//        customerDto.setPhoneNumber(customer.getPhoneNumber());
-//        customerDto.setCity(customer.getCity());
-//        customerDto.setCountry(customer.getCountry());
-//        return customerDto;
-
         }
         return null;
     }
@@ -82,4 +69,3 @@ public class CustomerServiceImpl implements CustomerService {
         return null;
     }
 }
-
