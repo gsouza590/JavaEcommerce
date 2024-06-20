@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 
 @Data
 @AllArgsConstructor
@@ -18,8 +20,8 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private double costPrice;
-    private double salePrice;
+    private BigDecimal costPrice;
+    private BigDecimal salePrice;
     private int currentQuantity;
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB")

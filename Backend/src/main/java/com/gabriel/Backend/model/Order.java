@@ -3,6 +3,7 @@ package com.gabriel.Backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Order {
     private Date orderDate;
     private Date deliveryDate;
     private String orderStatus;
-    private double totalPrice;
+    private BigDecimal totalPrice;
     private int quantity;
     private String paymentMethod;
     private boolean isAccept;
