@@ -16,8 +16,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
-
 @Service
 @RequiredArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -39,21 +40,54 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         Set<CartItem> cartItems = shoppingCart.getCartItems();
         CartItem cartItem = findCartItem(cartItems, productDto.getId());
+        Product product = transfer(productDto);
+        BigDecimal unitPrice = productDto.getCostPrice();
 
-        if (cartItem == null) {
-            cartItem = createCartItem(shoppingCart, productDto, quantity);
-            cartItems.add(cartItem);
+        int itemQuantity = 0;
+        if (cartItems == null) {
+            cartItems = new HashSet<>();
+            if (cartItem == null) {
+                cartItem = new CartItem();
+                cartItem.setProduct(product);
+                cartItem.setCart(shoppingCart);
+                cartItem.setQuantity(quantity);
+                cartItem.setUnitPrice(unitPrice);
+                cartItem.setCart(shoppingCart);
+                cartItems.add(cartItem);
+                cartItemRepository.save(cartItem);
+            } else {
+                itemQuantity = cartItem.getQuantity() + quantity;
+                cartItem.setQuantity(itemQuantity);
+                cartItemRepository.save(cartItem);
+            }
         } else {
-            cartItem.setQuantity(cartItem.getQuantity() + quantity);
-            cartItem.setUnitPrice(productDto.getCostPrice());
-            cartItemRepository.save(cartItem);
+            if (cartItem == null) {
+                cartItem = new CartItem();
+                cartItem.setProduct(product);
+                cartItem.setCart(shoppingCart);
+                cartItem.setQuantity(quantity);
+                cartItem.setUnitPrice(unitPrice);
+                cartItem.setCart(shoppingCart);
+                cartItems.add(cartItem);
+                cartItemRepository.save(cartItem);
+            } else {
+                itemQuantity = cartItem.getQuantity() + quantity;
+                cartItem.setQuantity(itemQuantity);
+                cartItemRepository.save(cartItem);
+            }
         }
+        shoppingCart.setCartItems(cartItems);
 
-        updateShoppingCart(shoppingCart, cartItems);
+        BigDecimal totalPrice = totalPrice(shoppingCart.getCartItems());
+        int totalItem = totalItem(shoppingCart.getCartItems());
+
+        shoppingCart.setTotalPrice(totalPrice);
+        shoppingCart.setTotalItems(totalItem);
         shoppingCart.setCustomer(customer);
 
         return shoppingCartRepository.save(shoppingCart);
     }
+
 
     @Override
     @Transactional
@@ -70,7 +104,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             return shoppingCartRepository.save(shoppingCart);
         }
 
-        throw new IllegalArgumentException("Cart item not found");
+        throw new IllegalArgumentException("Item do carrinho não encontrado");
     }
 
     @Override
@@ -88,21 +122,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             return shoppingCartRepository.save(shoppingCart);
         }
 
-        throw new IllegalArgumentException("Cart item not found");
+        throw new IllegalArgumentException("Item do carrinho não encontrado");
     }
 
     @Override
     @Transactional
     public void deleteCartById(Long id) {
         ShoppingCart shoppingCart = shoppingCartRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Carrinho de compras não encontrado"));
 
         if (!ObjectUtils.isEmpty(shoppingCart.getCartItems())) {
             cartItemRepository.deleteAll(shoppingCart.getCartItems());
         }
 
         shoppingCart.getCartItems().clear();
-        shoppingCart.setTotalPrice(0);
+        shoppingCart.setTotalPrice(BigDecimal.ZERO);
         shoppingCart.setTotalItems(0);
         shoppingCartRepository.save(shoppingCart);
     }
@@ -135,9 +169,23 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return cartItems.stream().mapToInt(CartItem::getQuantity).sum();
     }
 
-    private double totalPrice(Set<CartItem> cartItems) {
+    private BigDecimal totalPrice(Set<CartItem> cartItems) {
         return cartItems.stream()
-                .mapToDouble(item -> item.getUnitPrice() * item.getQuantity())
-                .sum();
+                .map(item -> item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    private Product transfer(ProductDto productDto) {
+        Product product = new Product();
+        product.setId(productDto.getId());
+        product.setName(productDto.getName());
+        product.setCurrentQuantity(productDto.getCurrentQuantity());
+        product.setCostPrice(productDto.getCostPrice());
+        product.setSalePrice(productDto.getSalePrice());
+        product.setDescription(productDto.getDescription());
+        product.setImage(productDto.getImage());
+        product.set_activated(productDto.is_activated());
+        product.set_deleted(productDto.is_deleted());
+        product.setCategory(productDto.getCategory());
+        return product;
     }
 }

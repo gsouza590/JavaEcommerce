@@ -64,10 +64,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<Order> findAll(String username) {
-
         Customer customer = customerRepository.findByUsername(username);
         return customer != null ? customer.getOrders() : Collections.emptyList();
     }
+
 
     @Override
     @Transactional(readOnly = true)
