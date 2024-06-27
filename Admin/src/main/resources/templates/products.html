@@ -52,7 +52,8 @@
                         <tr>
                             <th scope="col">Nome</th>
                             <th scope="col">Categoria</th>
-                            <th scope="col">Preço</th>
+                            <th scope="col">Preço de Custo</th>
+                            <th scope="col">Preço de Venda</th>
                             <th scope="col">Quantidade</th>
                             <th scope="col">Imagem</th>
                             <th scope="col">Atualizar</th>
@@ -64,6 +65,7 @@
                             <th scope="row" th:text="${product.name}"></th>
                             <td th:text="${product.category.name}"></td>
                             <td th:text="${product.costPrice}"></td>
+                            <td th:text="${product.salePrice}"></td>
                             <td th:text="${product.currentQuantity}"></td>
                             <td>
                                 <img class="img-fluid" style="height: 40px; width: 40px;" alt="Imagem do produto"
@@ -84,20 +86,17 @@
                     </table>
 
                     <!-- Pagination -->
-                    <nav aria-label="Navegação de página">
-                        <ul class="pagination">
-                            <li th:if="${currentPage != null && currentPage != 0}" class="page-item">
-                                <a th:href="@{'/products/' + (${currentPage - 1}) + '/'}" class="page-link">Anterior</a>
-                            </li>
-                            <li th:each="pageNumber : ${pageNumbers}"
-                                th:classappend="${currentPage != null && currentPage == pageNumber - 1 ? 'active' : ''}"
-                                class="page-item">
-                                <a th:href="@{'/products/' + (${pageNumber - 1}) + '/'}" class="page-link">
-                                    <span th:text="${pageNumber}"></span>
-                                </a>
-                            </li>
-                            <li th:if="${currentPage != null && currentPage + 1 != totalPages}" class="page-item">
-                                <a th:href="@{'/products/' + (${currentPage + 1}) + '/'}" class="page-link">Próximo</a>
+                    <nav aria-label="...">
+                        <ul class="pagination" >
+                            <li th:if= "${currentPage != 0}" class="page-item ">
+                                <a th:href = "@{'/products/' + ${currentPage - 1}}" class="page-link">Anterior</a>
+                            </li >
+                            <li th:each = "i : ${#numbers.sequence(1, totalPages)}" th:classappend = "${currentPage == i - 1 ? 'active' : ''}" class="page-item">
+                                <a th:href = "@{'/products/' + ${i - 1}}" class="page-link" href="#">
+				     <span th:text = "${i}">
+				     </span></a></li>
+                            <li th:if = "${currentPage + 1 != totalPages}" class="page-item">
+                                <a th:href = "@{'/products/' + ${currentPage + 1}}" class="page-link" href="#">Próximo</a>
                             </li>
                         </ul>
                     </nav>
