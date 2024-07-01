@@ -44,7 +44,8 @@
                         <tr>
                             <th scope="col">Nome</th>
                             <th scope="col">Categoria</th>
-                            <th scope="col">Preço</th>
+                            <th scope="col">Preço de Custo</th>
+                            <th scope="col">Preço de Venda</th>
                             <th scope="col">Quantidade</th>
                             <th scope="col">Imagem</th>
                             <th scope="col">Atualizar</th>
@@ -56,6 +57,7 @@
                             <td th:text="${product.name}"></td>
                             <td th:text="${product.category.name}"></td>
                             <td th:text="${product.costPrice}"></td>
+                            <td th:text="${product.salePrice}"></td>
                             <td th:text="${product.currentQuantity}"></td>
                             <td>
                                 <img class="my-product-image" style="height: 40px; width: 40px;" alt="Imagem do Produto" th:src="'data:image/jpeg;base64,' + ${product.image}">

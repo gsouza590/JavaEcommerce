@@ -1,3 +1,20 @@
+CREATE TABLE countries (
+    country_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE cities (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    country_id BIGINT,
+    CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES countries(country_id)
+);
+
+CREATE TABLE roles (
+    role_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE admins (
     admin_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(255),
@@ -7,6 +24,7 @@ CREATE TABLE admins (
     image VARCHAR(255),
     UNIQUE(username, image(255))
 );
+
 CREATE TABLE customers (
     customer_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(255),
@@ -22,47 +40,12 @@ CREATE TABLE customers (
     UNIQUE(username, phone_number)
 );
 
-CREATE TABLE customers_roles (
-    customer_id BIGINT NOT NULL,
-    role_id BIGINT NOT NULL,
-    CONSTRAINT fk_customer_role FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-    CONSTRAINT fk_role_customer FOREIGN KEY (role_id) REFERENCES roles(role_id),
-    PRIMARY KEY (customer_id, role_id)
-);
-
-CREATE TABLE roles (
-    role_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-);
-CREATE TABLE admins_roles (
-    admin_id BIGINT NOT NULL,
-    role_id BIGINT NOT NULL,
-    CONSTRAINT fk_admin_role FOREIGN KEY (admin_id) REFERENCES admins(admin_id),
-    CONSTRAINT fk_role_admin FOREIGN KEY (role_id) REFERENCES roles(role_id),
-    PRIMARY KEY (admin_id, role_id)
-);
-
-CREATE TABLE countries (
-    country_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-);
-
-
-CREATE TABLE cities (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    country_id BIGINT,
-    CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES countries(country_id)
-);
-
-
 CREATE TABLE categories (
     category_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     is_deleted BOOLEAN NOT NULL,
     is_activated BOOLEAN NOT NULL
 );
-
 
 CREATE TABLE products (
     product_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -76,7 +59,7 @@ CREATE TABLE products (
     is_deleted BOOLEAN NOT NULL,
     is_activated BOOLEAN NOT NULL,
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(category_id),
-    UNIQUE(name, image(255)) -- Especificar um comprimento para a coluna 'image'
+    UNIQUE(name, image(255))
 );
 
 CREATE TABLE orders (
@@ -92,7 +75,6 @@ CREATE TABLE orders (
     CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 );
 
-
 CREATE TABLE order_detail (
     order_detail_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     order_id BIGINT NOT NULL,
@@ -101,7 +83,6 @@ CREATE TABLE order_detail (
     CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(order_id),
     CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
-
 
 CREATE TABLE shopping_cart (
     shopping_cart_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -121,3 +102,18 @@ CREATE TABLE cart_items (
     CONSTRAINT fk_item_product FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
+CREATE TABLE customers_roles (
+    customer_id BIGINT NOT NULL,
+    role_id BIGINT NOT NULL,
+    CONSTRAINT fk_customer_role FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    CONSTRAINT fk_role_customer FOREIGN KEY (role_id) REFERENCES roles(role_id),
+    PRIMARY KEY (customer_id, role_id)
+);
+
+CREATE TABLE admins_roles (
+    admin_id BIGINT NOT NULL,
+    role_id BIGINT NOT NULL,
+    CONSTRAINT fk_admin_role FOREIGN KEY (admin_id) REFERENCES admins(admin_id),
+    CONSTRAINT fk_role_admin FOREIGN KEY (role_id) REFERENCES roles(role_id),
+    PRIMARY KEY (admin_id, role_id)
+);

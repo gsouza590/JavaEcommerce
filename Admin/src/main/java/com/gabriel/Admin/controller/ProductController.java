@@ -33,6 +33,8 @@ public class ProductController {
         List<ProductDto> products = productService.findAll();
         model.addAttribute("products", products);
         model.addAttribute("size", products.size());
+        model.addAttribute("currentPage", 1); // Adicionei esta linha
+        model.addAttribute("totalPages", 1); // Adicionei esta linha
         return "products";
     }
     @GetMapping("/products/{pageNo}")
@@ -45,7 +47,8 @@ public class ProductController {
         model.addAttribute("size", products.getSize());
         model.addAttribute("products", products);
         model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPages", products.getTotalPages());
+        int totalPages = products.getTotalPages();
+        model.addAttribute("totalPages", totalPages > 0 ? totalPages : 1);
         return "products";
     }
 

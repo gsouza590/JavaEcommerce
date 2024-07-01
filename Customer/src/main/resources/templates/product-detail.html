@@ -39,7 +39,7 @@
                 <form th:action="@{/add-to-cart}" method="post">
                     <div class="single-product-details">
                         <h2 th:text="${productDetail.name}"></h2>
-                        <h5 th:text="'R$' + ${productDetail.costPrice}"></h5>
+                        <h5 th:text="'R$' + ${productDetail.salePrice}"></h5>
                         <h4>Descrição:</h4>
                         <p th:text="${productDetail.description}"></p>
                         <div class="price-box-bar">
@@ -75,7 +75,7 @@
                             </div>
                             <div class="why-text">
                                 <h4 th:text="${product.name}"></h4>
-                                <h5 th:text="'R$' + ${product.costPrice}"></h5>
+                                <h5 th:text="'R$' + ${product.salePrice}"></h5>
                             </div>
                         </div>
                     </form>

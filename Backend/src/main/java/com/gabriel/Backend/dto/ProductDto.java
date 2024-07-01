@@ -35,8 +35,8 @@ public class ProductDto {
     private int currentQuantity;
     private Category category;
     private String image;
-    private boolean is_activated;
-    private boolean is_deleted;
+    private boolean is_activated=true;
+    private boolean is_deleted=false;
     private String currentPage;
 
     public static List<ProductDto> ProductToDto(List<Product> products) {

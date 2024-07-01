@@ -70,7 +70,7 @@
                                                 </div>
                                                 <div class="why-text">
                                                     <h4 th:text="${product.name}"></h4>
-                                                    <h5 th:text="'R$ ' + ${product.costPrice}"></h5>
+                                                    <h5 th:text="'R$ ' + ${product.salePrice}"></h5>
                                                 </div>
                                             </div>
                                         </form>
@@ -91,7 +91,7 @@
                                             <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                                 <div class="why-text full-width">
                                                     <h4 th:text="${productView.name}"></h4>
-                                                    <h5 th:text="'R$ ' + ${productView.costPrice}"></h5>
+                                                    <h5 th:text="'R$ ' + ${productView.salePrice}"></h5>
                                                     <p th:text="${productView.description}"></p>
                                                     <input type="hidden" th:value="${productView.id}" name="id" class="form-control">
                                                     <input type="submit" class="btn hvr-hover" value="Adicionar ao Carrinho">

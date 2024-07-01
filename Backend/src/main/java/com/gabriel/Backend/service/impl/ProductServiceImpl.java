@@ -67,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
 
             modelMapper.map(productDto, product);
 
-            if (imageProduct != null) {
+            if (imageProduct != null && !imageProduct.isEmpty()) {
                 product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
             }
             return productRepository.save(product);
