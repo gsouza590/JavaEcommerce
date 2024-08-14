@@ -1,4 +1,5 @@
 package com.gabriel.Backend.model;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,4 +24,6 @@ public class OrderDetail {
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Product product;
 
+    @Column(name = "quantity")
+    private int quantity;
 }

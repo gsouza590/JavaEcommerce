@@ -35,18 +35,31 @@ public class OrderServiceImpl implements OrderService {
         order.setPaymentMethod("Dinheiro");
         order.setOrderStatus("Pendente");
         order.setQuantity(shoppingCart.getTotalItems());
+
         List<OrderDetail> orderDetailList = new ArrayList<>();
         for (CartItem item : shoppingCart.getCartItems()) {
+            Product product = item.getProduct();
+            int quantityInStock = product.getCurrentQuantity();
+
+            if (item.getQuantity() > quantityInStock) {
+                throw new IllegalArgumentException("Produto " + product.getName() + " não tem estoque suficiente.");
+            }
+            product.setCurrentQuantity(quantityInStock - item.getQuantity());
+
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
-            orderDetail.setProduct(item.getProduct());
+            orderDetail.setProduct(product);
+            orderDetail.setQuantity(item.getQuantity()); // Usando a quantidade do item do carrinho
+
             detailRepository.save(orderDetail);
             orderDetailList.add(orderDetail);
         }
+
         order.setOrderDetailList(orderDetailList);
         cartService.deleteCartById(shoppingCart.getId());
         return orderRepository.save(order);
     }
+
 
 
     @Override
