@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -76,11 +77,16 @@ public class ShoppingCartController {
                              @RequestParam("quantity") int quantity,
                              Model model,
                              Principal principal,
-                             HttpSession session) {
+                             HttpSession session,  RedirectAttributes redirectAttributes) {
         if (principal == null) {
             return "redirect:/login";
         }
         ProductDto productDto = productService.getById(id);
+
+        if (quantity > productDto.getCurrentQuantity()) {
+            redirectAttributes.addFlashAttribute("error", "A quantidade solicitada excede o estoque disponível.");
+            return "redirect:/cart";
+        }
         String username = principal.getName();
         ShoppingCart shoppingCart = shoppingCartService.updateCart(productDto, quantity, username);
         model.addAttribute("shoppingCart", shoppingCart);

@@ -65,8 +65,8 @@
                             <form th:action="@{/update-cart}" method="post">
                                 <input type = "hidden" name = "id" th:value = "${cartItem.product.id}" >
                                 <td class="quantity-box">
-                                    <input type="number" name="quantity" th:value="${cartItem.quantity}" size="4"
-                                           value="1" min="0" step="1"
+                                    <input type="number" name="quantity" th:value="${cartItem.quantity}"  size="4"
+                                           min="1"  th:max="${cartItem.product.currentQuantity}" step="1"
                                            class="c-input-text qty text">
                                 </td>
                                 <td class="total-pr">
