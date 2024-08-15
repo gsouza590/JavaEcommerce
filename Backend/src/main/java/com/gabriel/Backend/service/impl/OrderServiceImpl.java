@@ -35,8 +35,8 @@ public class OrderServiceImpl implements OrderService {
         order.setCustomer(shoppingCart.getCustomer());
         order.setTotalPrice(shoppingCart.getTotalPrice());
         order.setAccept(false);
-        order.setPaymentMethod("Dinheiro");
-        order.setOrderStatus("Pendente");
+        order.setPaymentMethod(DEFAULT_PAYMENT_METHOD);
+        order.setOrderStatus(DEFAULT_ORDER_STATUS);
         order.setQuantity(shoppingCart.getTotalItems());
 
         List<OrderDetail> orderDetailList = new ArrayList<>();
@@ -52,16 +52,20 @@ public class OrderServiceImpl implements OrderService {
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
             orderDetail.setProduct(product);
-            orderDetail.setQuantity(item.getQuantity()); // Usando a quantidade do item do carrinho
+            orderDetail.setQuantity(item.getQuantity());
 
             detailRepository.save(orderDetail);
             orderDetailList.add(orderDetail);
         }
 
         order.setOrderDetailList(orderDetailList);
+
+        order = orderRepository.save(order); // Save the order to ensure it has an ID
+
         cartService.deleteCartById(shoppingCart.getId());
-        return orderRepository.save(order);
+        return order;
     }
+
 
 
     @Override
@@ -75,7 +79,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<Order> findAllOrders() {
-   ;
         return orderRepository.findAll();
     }
 
@@ -86,13 +89,13 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Order with ID " + id + " not found."));
         order.setAccept(true);
-        order.setDeliveryDate(calculateDeliveryDate(DEFAULT_DELIVERY_DAYS));
+        order.setDeliveryDate(calculateDeliveryDate());
         return orderRepository.save(order);
     }
 
-    private Date calculateDeliveryDate(int daysToAdd) {
+    private Date calculateDeliveryDate() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, daysToAdd);
+        calendar.add(Calendar.DAY_OF_MONTH, OrderServiceImpl.DEFAULT_DELIVERY_DAYS);
         return calendar.getTime();
     }
 
