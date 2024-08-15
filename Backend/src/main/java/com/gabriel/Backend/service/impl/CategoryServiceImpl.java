@@ -1,6 +1,7 @@
 package com.gabriel.Backend.service.impl;
 
 import com.gabriel.Backend.dto.CategoryDto;
+import com.gabriel.Backend.exceptions.CategoryNotFoundException;
 import com.gabriel.Backend.model.Category;
 import com.gabriel.Backend.repository.CategoryRepository;
 import com.gabriel.Backend.service.CategoryService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +33,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(Long id) {
-
-        return repository.findById(id).get();
+        Optional<Category> category = repository.findById(id);
+        return category.orElseThrow(()-> new CategoryNotFoundException("Category not found with id: " + id));
     }
 
 

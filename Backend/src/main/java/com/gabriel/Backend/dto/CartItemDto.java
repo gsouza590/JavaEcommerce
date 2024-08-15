@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,6 +20,6 @@ public class CartItemDto {
 
     private int quantity;
 
-    private double unitPrice;
+    private BigDecimal unitPrice;
 
 }

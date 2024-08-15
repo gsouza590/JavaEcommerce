@@ -59,10 +59,9 @@
                                    class="btn btn-primary">Atualizar</a>
                             </td>
                             <td>
-                                <a th:if="${category.is_deleted} == true" th:href="@{/enable-category(id = ${category.id})}"
+                                <a th:if="${category.is_deleted}" th:href="@{/enable-category(id=${category.id})}"
                                    class="btn btn-primary">Ativar</a>
-                                <a th:if="${category.is_deleted} == false"
-                                   th:href="@{/delete-category(id = ${category.id})}"
+                                <a th:if="${!category.is_deleted}" th:href="@{/delete-category(id=${category.id})}"
                                    class="btn btn-danger">Deletar</a>
                             </td>
                         </tr>
@@ -88,9 +87,8 @@
 <!-- Scroll to Top Button-->
 <a th:replace="~{fragments :: scroll}"></a>
 
-<!-- Modals -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<!-- Add Category Modal-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <form th:action="@{/add-category}" method="post" th:object="${categoryNew}">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -114,9 +112,10 @@
         </div>
     </form>
 </div>
+<!-- End of Add Category Modal -->
 
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalExample"
-     aria-hidden="true">
+<!-- Edit Category Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalExample" aria-hidden="true">
     <form th:action="@{/update-category}" method="put">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -144,6 +143,7 @@
         </div>
     </form>
 </div>
+<!-- End of Edit Category Modal -->
 
 <!-- Bootstrap core JavaScript-->
 <div th:replace="~{fragments :: script}"></div>

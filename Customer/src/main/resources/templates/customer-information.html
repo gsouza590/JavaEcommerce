@@ -11,40 +11,36 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <!-- CSS Files -->
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- Site CSS -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- Responsive CSS -->
     <link rel="stylesheet" href="css/responsive.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/custom.css">
 
+    <!-- JavaScript Files -->
     <script src="Change-Password.js"></script>
 
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
-<!-- Start Main Top -->
-<div th:replace="~{fragments::main-top}">
-</div>
-<!-- End Main Top -->
+<!-- Main Top -->
+<div th:replace="~{fragments::main-top}"></div>
 
-<!-- Start Main Top -->
+<!-- Main Header -->
 <header th:replace="~{fragments::main-header}"></header>
-<!-- End Main Top -->
 
-<!-- Start Top Search -->
-<div th:replace="~{fragments::top-search}">
-</div>
-<!-- End Top Search -->
+<!-- Top Search -->
+<div th:replace="~{fragments::top-search}"></div>
 
-<!-- End All Title Box -->
+<!-- Personal Information Form -->
 <div class="mainDiv">
     <div class="cardStyle">
         <h2 class="formTitle">
@@ -55,47 +51,38 @@
         </div>
         <form th:action="@{/update-profile}" method="post" name="signupForm" id="signupForm" th:object="${customer}">
             <div class="inputDiv">
-                <label class="inputLabel" for="firstname"> Primeiro Nome * </label>
+                <label class="inputLabel" for="firstname">Primeiro Nome *</label>
                 <input type="text" id="firstname" th:field="*{firstName}" name="firstname" required>
             </div>
-            <div class="alert alert-warning"
-                 th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+
             <div class="inputDiv">
                 <label class="inputLabel" for="lastname">Sobrenome *</label>
-                <input type="text" th:field="*{lastName}"
-                       id="lastname" name="lastname" required>
+                <input type="text" th:field="*{lastName}" id="lastname" name="lastname" required>
             </div>
-            <div class="alert alert-warning"
-                 th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" required></div>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+
             <div class="inputDiv">
                 <label class="inputLabel" for="username">Email *</label>
-                <input type="text" th:field="*{username}"
-                       id="username" name="username" readonly>
+                <input type="text" th:field="*{username}" id="username" name="username" readonly>
             </div>
 
             <div class="inputDiv">
                 <label class="inputLabel" for="phoneNumber">Telefone *</label>
-                <input type="number" th:field="*{phoneNumber}"
-                       th:placeholder="${customer.phoneNumber != null} ? ${customer.phoneNumber} : 'Insira seu telefone'"
-                       id="phoneNumber" name="phonenumber" maxlength="15" minlength="10">
+                <input type="number" th:field="*{phoneNumber}" th:placeholder="${customer.phoneNumber != null} ? ${customer.phoneNumber} : 'Insira seu telefone'" id="phoneNumber" name="phonenumber" maxlength="15" minlength="10">
             </div>
-            <div class="alert alert-warning"
-                 th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
 
             <div class="inputDiv">
                 <label class="inputLabel" for="address">Endereço *</label>
-                <input type="text" th:field="*{address}"
-                       th:placeholder="${customer.address != null} ? ${customer.address} : 'Insira seu endereço'"
-                       id="address" name="address">
+                <input type="text" th:field="*{address}" th:placeholder="${customer.address != null} ? ${customer.address} : 'Insira seu endereço'" id="address" name="address">
             </div>
+
             <div class="inputDiv">
                 <label class="inputLabel" for="city">Cidade *</label>
                 <select class="form-control" id="city" th:field="*{city}" name="city" required>
                     <option value="">-Selecione-</option>
-                    <option th:each="city : ${cities}"
-                            th:value="${city.id}"
-                            th:text="${city.name}">
-                    </option>
+                    <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
                 </select>
             </div>
 
@@ -103,10 +90,7 @@
                 <label class="inputLabel" for="country">País *</label>
                 <select class="form-control" id="country" th:field="*{country}" name="country" required>
                     <option value="">-Selecione-</option>
-                    <option th:each="country : ${countries}"
-                            th:value="${country.id}"
-                            th:text="${country.name}">
-                    </option>
+                    <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
                 </select>
             </div>
 
@@ -117,15 +101,16 @@
                 <br>
             </div>
             <a th:href="@{/change-password}" style="margin-top: 5px;" class="btn btn-primary text-center buttonWrapper">Mudar Senha</a>
-
         </form>
     </div>
 </div>
+
 <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
-<!-- Start copyright  -->
+
+<!-- Footer -->
 <footer th:replace="~{fragments::footer}"></footer>
 
-
+<!-- Scripts -->
 <div th:replace="~{fragments::script}"></div>
 </body>
 

@@ -2,6 +2,7 @@ package com.gabriel.Backend.service;
 
 import com.gabriel.Backend.dto.AdminDto;
 import com.gabriel.Backend.model.Admin;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface AdminService {
     Admin save(AdminDto adminDto);
@@ -11,4 +12,5 @@ public interface AdminService {
     AdminDto getAdmin(String name);
 
     Admin  update(AdminDto adminDto);
+
 }

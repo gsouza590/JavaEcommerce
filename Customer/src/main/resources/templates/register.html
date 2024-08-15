@@ -2,89 +2,72 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <!-- Basic -->
 
-<head th:replace="fragments :: head">
-
+<head th:replace="~{fragments::head}">
 </head>
 
 <body>
-	<!-- Start Main Top -->
-	<div th:replace="fragments::main-top"></div>
-	<!-- End Main Top -->
+<!-- Start Main Top -->
+<div th:replace="~{fragments::main-top}"></div>
+<!-- End Main Top -->
 
-	<!-- Start Main Top -->
-	<header th:replace="fragments::main-header"> </header>
-	<!-- End Main Top -->
+<!-- Start Main Header -->
+<header th:replace="~{fragments::main-header}"></header>
+<!-- End Main Header -->
 
-	<!-- Start Top Search -->
-	<div th:replace="fragments::top-search"></div>
-	<!-- End Top Search -->
+<!-- Start Top Search -->
+<div th:replace="~{fragments::top-search}"></div>
+<!-- End Top Search -->
 
-
-	<section id="register-form">
-		<div class="noi-dung">
-			<div class="form">
-				<h2>Register</h2>
-				<div th:if="${error}" class="text-center alert alert-danger">
-					<p th:text="${error}"></p>
-				</div>
-				<div th:if="${username}" class="text-center alert-warning">
-					<p th:text="${username}"></p>
-				</div>
-				<div th:if="${password}" class="text-center alert-warning">
-					<p th:text="${password}"></p>
-				</div>
-				<div th:if="${success}" class="text-center alert-success">
-					<p th:text="${success}"></p>
-				</div>
-				<form th:action="@{/do-register}" method="post"
-					th:object="${customerDto}">
-					<div class="input-form">
-						<!-- <span>User name</span> -->
-						<input type="text" th:field="*{firstName}"
-							placeholder="Nome" name="">
-					</div>
-					<div class="alert alert-danger"
-						th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
-					<div class="input-form">
-						<!-- <span>User name</span> -->
-						<input type="text" th:field="*{lastName}" placeholder="Sobrenome"
-							name="">
-					</div>
-					<div class="alert alert-danger"
-						th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
-					<div class="input-form">
-						<!-- <span>User name</span> -->
-						<input type="email" th:field="*{username}" placeholder="Usuario"
-							name="">
-					</div>
-					<div class="input-form">
-						<!-- <span>Password</span> -->
-						<input type="password" th:field="*{password}"
-							placeholder="Senha" name="">
-					</div>
-					<div class="alert alert-danger"
-						th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-					<div class="input-form">
-						<!-- <span>Password</span> -->
-						<input type="password" th:field="*{repeatPassword}"
-							placeholder="Confirme a Senha" name="">
-					</div>
-					<div class="input-form">
-						<p>
-							Você já possui uma conta? <a th:href="@{/login}"> Entre agora </a>
-						</p>
-					</div>
-					<div class="input-form">
-						<input type="submit" value="Sign up">
-					</div>
-				</form>
+<section id="register-form">
+	<div class="noi-dung">
+		<div class="form">
+			<h2>Register</h2>
+			<div th:if="${error}" class="text-center alert alert-danger">
+				<p th:text="${error}"></p>
 			</div>
+			<div th:if="${username}" class="text-center alert-warning">
+				<p th:text="${username}"></p>
+			</div>
+			<div th:if="${password}" class="text-center alert-warning">
+				<p th:text="${password}"></p>
+			</div>
+			<div th:if="${success}" class="text-center alert-success">
+				<p th:text="${success}"></p>
+			</div>
+			<form th:action="@{/do-register}" method="post" th:object="${customerDto}">
+				<div class="input-form">
+					<input type="text" th:field="*{firstName}" placeholder="Nome" name="">
+				</div>
+				<div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+				<div class="input-form">
+					<input type="text" th:field="*{lastName}" placeholder="Sobrenome" name="">
+				</div>
+				<div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+				<div class="input-form">
+					<input type="email" th:field="*{username}" placeholder="Usuario" name="">
+				</div>
+				<div class="input-form">
+					<input type="password" th:field="*{password}" placeholder="Senha" name="">
+				</div>
+				<div class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+				<div class="input-form">
+					<input type="password" th:field="*{repeatPassword}" placeholder="Confirme a Senha" name="">
+				</div>
+				<div class="input-form">
+					<p>
+						Você já possui uma conta? <a th:href="@{/login}">Entre agora</a>
+					</p>
+				</div>
+				<div class="input-form">
+					<input type="submit" value="Registrar">
+				</div>
+			</form>
 		</div>
+	</div>
+</section>
 
-	</section>
-
-	<!-- ALL JS FILES -->
-	<div th:replace="fragments::script"></div>
+<!-- ALL JS FILES -->
+<div th:replace="~{fragments::script}"></div>
 </body>
 
 </html>

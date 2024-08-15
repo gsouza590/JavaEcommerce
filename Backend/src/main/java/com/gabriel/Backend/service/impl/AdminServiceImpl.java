@@ -5,8 +5,6 @@ import com.gabriel.Backend.model.Admin;
 import com.gabriel.Backend.repository.AdminRepository;
 import com.gabriel.Backend.repository.RoleRepository;
 import com.gabriel.Backend.service.AdminService;
-import com.gabriel.Backend.service.exceptions.Admin.AdminAlreadyExistsException;
-import com.gabriel.Backend.service.exceptions.Admin.AdminNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +19,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin save(AdminDto adminDto) {
-        if (adminRepository.findByUsername(adminDto.getUsername()) != null) {
-            throw new AdminAlreadyExistsException("Admin with username " + adminDto.getUsername() + " already exists");
-        }
         Admin admin = convertToEntity(adminDto);
         admin.setRoles(Arrays.asList(roleRepository.findByName("ADMIN")));
         return adminRepository.save(admin);
@@ -31,12 +26,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin findByUsername(String username) {
-        Admin admin = adminRepository.findByUsername(username);
-
-        if (admin == null) {
-            throw new AdminNotFoundException("Admin with username " + username + " not found");
-        }
-
         return adminRepository.findByUsername(username);
     }
 
@@ -44,26 +33,23 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public AdminDto getAdmin(String name) {
         Admin admin = adminRepository.findByUsername(name);
-        if (admin == null) {
-            throw new AdminNotFoundException("Admin with username " + name + " not found");
-        }
         return convertToDto(admin);
-
     }
 
     @Override
     @Transactional
     public Admin update(AdminDto adminDto) {
         Admin admin = adminRepository.findByUsername(adminDto.getUsername());
-        if (admin == null) {
-            throw new AdminNotFoundException("Admin with username " + adminDto.getUsername() + " not found");
+        if (admin != null) {
+            admin.setFirstName(adminDto.getFirstName());
+            admin.setLastName(adminDto.getLastName());
+            admin.setPassword(adminDto.getPassword());
+            // Atualize outros campos conforme necessário
+            return adminRepository.save(admin);
         }
-
-        admin.setFirstName(adminDto.getFirstName());
-        admin.setLastName(adminDto.getLastName());
-        return adminRepository.save(admin);
-
+        return null;
     }
+
 
     private Admin convertToEntity(AdminDto adminDto) {
         Admin admin = new Admin();

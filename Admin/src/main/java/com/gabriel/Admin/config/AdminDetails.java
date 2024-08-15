@@ -1,4 +1,5 @@
 package com.gabriel.Admin.config;
+
 import com.gabriel.Backend.model.Admin;
 import com.gabriel.Backend.model.Roles;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,21 +11,20 @@ import java.util.Collection;
 import java.util.List;
 
 public class AdminDetails implements UserDetails {
+    private static final long serialVersionUID = 1L;
+    private final Admin admin;
 
-	private static final long serialVersionUID = 1L;
-	private Admin admin;
+    public AdminDetails(Admin admin) {
+        this.admin = admin;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        for (Roles role : admin.getRoles()
-        ) {
-
+        for (Roles role : admin.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
-
         }
-        return null;
+        return authorities;
     }
 
     @Override

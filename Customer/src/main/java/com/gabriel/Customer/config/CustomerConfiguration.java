@@ -1,6 +1,7 @@
 package com.gabriel.Customer.config;
 
-import org.modelmapper.ModelMapper;
+import com.gabriel.Backend.repository.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +17,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class CustomerConfiguration {
-    @Bean
-    public CustomerServiceConfig userDetailsService() {
-        return new CustomerServiceConfig();
-    }
+
+    private final CustomerServiceConfig userDetailsService;
+    private final CustomerRepository customerRepository;
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -28,43 +30,44 @@ public class CustomerConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder
-                = http.getSharedObject(AuthenticationManagerBuilder.class);
-
-        authenticationManagerBuilder
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
-
-        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(author ->
-                        author.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .requestMatchers("/*", "/product-detail/**","/cancel-order/**","/find-products/**").permitAll()
-                                .requestMatchers("/shop/**").hasAuthority("CUSTOMER")
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/*", "/product-detail/**", "/cancel-order/**", "/find-products/**").permitAll()
+                        .requestMatchers("/shop/**").hasAuthority("CUSTOMER")
                 )
-                .formLogin(login ->
-                        login.loginPage("/login")
-                                .loginProcessingUrl("/do-login")
-                                .defaultSuccessUrl("/index", true)
-                                .permitAll()
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/do-login")
+                        .defaultSuccessUrl("/index", true)
+                        .permitAll()
                 )
-                .logout(logout ->
-                        logout.invalidateHttpSession(true)
-                                .clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessUrl("/login?logout")
-                                .permitAll()
+                .logout(logout -> logout
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
                 )
-                .authenticationManager(authenticationManager)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 )
-        ;
+                .httpBasic(httpBasic -> httpBasic.disable()); // if not using basic auth
+
         return http.build();
     }
 
-}
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
 
+        authenticationManagerBuilder
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+
+        return authenticationManagerBuilder.build();
+    }
+}

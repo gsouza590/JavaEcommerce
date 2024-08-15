@@ -31,13 +31,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Customer findByUsername(String username) {
         return customerRepository.findByUsername(username);
     }
 
     @Override
-    @Transactional
     public Customer update(CustomerDto dto) {
         Customer customer = customerRepository.findByUsername(dto.getUsername());
         customer.setAddress(dto.getAddress());
@@ -48,29 +47,25 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-    @Override
-    @Transactional
-    public CustomerDto getCustomer(String username) {
-        CustomerDto customerDto = new CustomerDto();
-        Customer customer = customerRepository.findByUsername(username);
-        customerDto.setFirstName(customer.getFirstName());
-        customerDto.setLastName(customer.getLastName());
-        customerDto.setUsername(customer.getUsername());
-        customerDto.setPassword(customer.getPassword());
-        customerDto.setAddress(customer.getAddress());
-        customerDto.setPhoneNumber(customer.getPhoneNumber());
-        customerDto.setCity(customer.getCity());
-        customerDto.setCountry(customer.getCountry());
-        return customerDto;
-    }
 
+    @Override
+    @Transactional(readOnly = true)
+    public CustomerDto getCustomer(String username) {
+        Customer customer = customerRepository.findByUsername(username);
+        if (customer != null) {
+            return modelMapper.map(customer, CustomerDto.class);
+        }
+        return null;
+    }
 
     @Override
     @Transactional
     public Customer changePass(CustomerDto customerDto) {
         Customer customer = customerRepository.findByUsername(customerDto.getUsername());
-        customer.setPassword(customerDto.getPassword());
-        return customerRepository.save(customer);
+        if (customer != null) {
+            customer.setPassword(customerDto.getPassword());
+            return customerRepository.save(customer);
+        }
+        return null;
     }
 }
-

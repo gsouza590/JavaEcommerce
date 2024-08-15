@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication(scanBasePackages = {"com.gabriel.Backend.*", "com.gabriel.Admin.*"})
 @EnableJpaRepositories(value = "com.gabriel.Backend.repository")
 @EntityScan(value = "com.gabriel.Backend.model")
+
 public class AdminApplication {
 
 	public static void main(String[] args) {
